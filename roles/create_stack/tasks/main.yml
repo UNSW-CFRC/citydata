@@ -1,0 +1,4 @@
+---
+
+- include_vars: cityfutures.yml
+- include_tasks: create_stack.yml
