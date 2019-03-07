@@ -5,3 +5,7 @@
 #
 # prv_ip: 172.31.21.146 # Private IP address of server
 # pub_ip: 54.215.225.243 # Public IP address of server
+
+admin_pass: '{{ admin_pass_dev }}'
+django_secret_key: '{{ django_secret_key_dev }}'
+aws_secret_key: '{{ aws_secret_key_dev }}'
