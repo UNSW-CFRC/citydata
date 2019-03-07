@@ -6,10 +6,7 @@
           "Value" : { "Fn::GetAtt" : [ "{{ project }}", "PrivateIp" ]},
           "Description" : "{{ project }} server's Private IP Address"
         },
-        "{{ project }}PubIp" : {
-          "Value" : { "Fn::GetAtt" : [ "{{ project }}", "PublicIp" ]},
-          "Description" : "{{ project }} server's Public IP Address"
-        },
+        {{ output_public_ip}}
     },
     "Resources": {
         "{{ project }}": {
@@ -75,6 +72,7 @@
         "volData": {
             "Type": "AWS::EC2::Volume",
             "Properties": {
+                "AvailabilityZone": "{{ aws_zone }}",
                 "Size": "{{ big_disk_size }}",
                 "VolumeType": "gp2"
             },
@@ -87,6 +85,7 @@
         "volBackup": {
             "Type": "AWS::EC2::Volume",
             "Properties": {
+                "AvailabilityZone": "{{ aws_zone }}",
                 "Size": "{{ backup_disk_size }}",
                 "VolumeType": "gp2"
             },
@@ -94,6 +93,7 @@
         "volGWC": {
             "Type": "AWS::EC2::Volume",
             "Properties": {
+                "AvailabilityZone": "{{ aws_zone }}",
                 "Size": "{{ gwc_disk_size }}",
                 "VolumeType": "gp2"
             },
