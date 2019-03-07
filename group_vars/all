@@ -3,10 +3,6 @@ envt_suffix: -{{ envt }}
 
 # Assumes host has small system disk so big things should be moved to /mnt/...
 
-admin_pass: '{{ admin_pass }}{{envt_suffix}}'
-django_secret_key: '{{ django_secret_key }}{{envt_suffix}}'
-aws_secret_key: '{{ aws_secret_key }}{{envt_suffix}}'
-
 mount_point: /data # /mnt
 
 big_disk_device: xvdb
