@@ -1,6 +1,8 @@
 ---
 envt_suffix: -{{ envt }}
 
+postgres_version: 9.5
+
 # Assumes host has small system disk so big things should be moved to /mnt/...
 
 mount_point: /data # /mnt
