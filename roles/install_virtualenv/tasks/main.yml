@@ -1,7 +1,7 @@
 ---
 - name: Create virtualenv dir
   file:
-    path: "{{ lookup('env','HOME') }}/.virtualenvs"
+    path: "~/.virtualenvs"
     state: directory
 
 - name: Install virtualenv and wrapper
@@ -13,7 +13,7 @@
 
 - name: Trigger virtualenv from user's bash run commands
   blockinfile:
-    path: "{{ lookup('env','HOME') }}/.bashrc"
+    path: "~/.bashrc"
     block: |
       export WORKON_HOME=$HOME/.virtualenvs
       source /usr/local/bin/virtualenvwrapper.sh
@@ -21,6 +21,7 @@
       export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
       export SITE_HOST_NAME={{ private_ip }}
       export SITE_HOST_PORT={{ port }}
+      export PATH=$PATH:$HOME/.virtualenvs/bin
 
 
 # export PROJECT_HOME=$HOME/

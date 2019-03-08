@@ -1,0 +1,21 @@
+---
+- name: Get geonode from repo
+  git:
+    repo: https://github.com/GeoNode/geonode-project.git
+    dest: '~'
+
+- name: Manually create the initial virtualenv
+  command: mkvirtualenv citydata
+  args:
+    creates: "~/{{ project }}"
+
+- name: Install django
+  pip:
+     install
+     name: Django=={{ django_version }}
+
+     # Not sure this is the right module
+    # django_manage
+    #   app_path: "~/{{ project}}"
+    #   command: startproject
+    #     --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile my_geonode
