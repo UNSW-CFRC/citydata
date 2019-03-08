@@ -11,6 +11,8 @@
 - include_tasks: install_java.yml
 
 
+# - include_tasks: install_python_support.yml
+
 - name: Check tmp folder
   stat:
     path: /tmp
