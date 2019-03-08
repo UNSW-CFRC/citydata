@@ -20,3 +20,9 @@
 
 - include_tasks: mv_tmp_to_big_disk.yml
   when: "tmp_check.stat.islnk is not defined or (tmp_check.stat.islnk is defined and tmp_check.stat.islnk == False) and 'small_sysdisk' in group_names"
+
+- name: Make share folder writeable
+  file:
+    path: /usr/local/share
+    mode: 777
+  become: true
