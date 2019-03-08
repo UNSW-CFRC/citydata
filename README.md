@@ -13,7 +13,80 @@ Available at:
 
 ## Create a custom project
 
-Note: You can call your geonode project whatever you like following the naming conventions for python packages (generally lower case with underscores (``_``). In the examples below, replace ``my_geonode`` with whatever you would like to name your project.
+Note: You can call your geonode project whatever you like following the naming conventions for python packages (generally lower case with underscores (``_``). In the examples below, replace ``citydata`` with whatever you would like to name your project.
+
+## Create stack
+
+Now create the stack, including EC2 instance, volumes and security group:
+
+```bash
+ansible-playbook stack.yml -i localhost_ENV --ask-vault-pass
+```
+where ENV = dev, test or prod. E.g. localhost_test
+
+When prompted, enter the Ansible vault password for your project.
+
+If successful this step will print the private IP address, and if available the public IP address, of the CityData EC2 instance created.
+
+Copy the private IP address into the relevant inventory and group_vars files for the environment you are creating (dev, test or prod).
+
+If available, use the public IP address for connecting with PuTTY (below), otherwise use the private IP address to connect through a VPN.
+
+## Prepare server
+
+### Authorise the control machine to SSH to the server
+
+Use PuTTY or similar to SSH from your laptop into the new CityData server. You will need a local copy of the key file CityData.ppk (or CityData.pem for Macs).
+
+For PuTTY use the following settings:  
+* Session > Host name: *CityData's private IP* (or public IP if no VPN is used)
+* Session > Connection type: SSH
+* Connection > Seconds between keepalives: 120
+* Connection > Data > Auto-login username: ubuntu
+* Connection > SSH > Auth > Private key file for authentication: *path/to/CityData.ppk*
+
+The first time you SSH to the new server you will be asked to confirm.
+
+On the Ansible control machine:
+```bash
+cat ~/.ssh/id_rsa.pub
+```
+
+Copy the content of id_rsa.pub to your clipboard.
+
+On the CityData server:
+```bash
+vi ~/.ssh/authorized_keys
+```
+Paste from the clipboard to a new line at the end of the file.
+
+Now test the connection. On the Ansible control machine:
+```bash
+ssh <CityData private IP>
+```
+
+You will see a warning that the authenticity of the host can't be established.
+
+Type `yes` when prompted to permanently add the IP address of the CityData server to the list of known hosts.
+
+You should now be logged into the CityData server.
+
+Type `exit` to return to the Ansible control machine.
+
+```bash
+ansible-playbook prep.yml -i ENV_py3
+```
+
+```bash
+ansible-playbook virtual.yml -i ENV_py2
+```
+
+
+> May need to remove or at least stop tomcat7.
+> I did that manually, not sure how it was installed or started,
+> could have been my script for all I know.
+
+> TODO: Complete these  instructions from geonode_install or raise_install
 
 ## Using a Python virtual environment
 
@@ -22,52 +95,58 @@ To setup your project using a local python virtual environment, follow these ins
 1. Prepare the Environment
 
 ```
+    . .bashrc
     git clone https://github.com/GeoNode/geonode-project.git -b master
-    mkvirtualenv my_geonode
+    mkvirtualenv citydata
     pip install Django==1.11.16
 
-    django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile my_geonode
+    django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile citydata
 
-    cd my_geonode
+    cd citydata
 ```
 
 2. Setup the Python Dependencies
 
+**Don't use sudo** with these commands.
+
+```
+pip install -r requirements.txt --upgrade
+pip install -e . --upgrade
+
+sudo apt-get install -y libgdal-dev
+
+GDAL_VERSION=`gdal-config --version`
+PYGDAL_VERSION="$(pip install pygdal==$GDAL_VERSION 2>&1 | grep -oP '(?<=: )(.*)(?=\))' | grep -oh $GDAL_VERSION\.[0-9])"
+pip install pygdal==$PYGDAL_VERSION
 ```
 
-    pip install -r requirements.txt --upgrade
-    pip install -e . --upgrade
+# Using Custom Local Settings
+```
+cp citydata/local_settings.py.sample citydata/local_settings.py
 
-    GDAL_VERSION=`gdal-config --version`
-    PYGDAL_VERSION="$(pip install pygdal==$GDAL_VERSION 2>&1 | grep -oP '(?<=: )(.*)(?=\))' | grep -oh $GDAL_VERSION\.[0-9])"
-    pip install pygdal==$PYGDAL_VERSION
+vim citydata/local_settings.py
+--> add private IP to ALLOWED_SITES
+```
+Apply patch https://github.com/GeoNode/geonode/pull/4154/commits/61c38088cae628aa165b2b1bbb1d73bcff27298e#diff-1aeb9692c529ee0f5d825a51cb992105 then
 
-    # Using Default Settings
-    DJANGO_SETTINGS_MODULE=my_geonode.settings paver reset
-    DJANGO_SETTINGS_MODULE=my_geonode.settings paver setup
-    DJANGO_SETTINGS_MODULE=my_geonode.settings paver sync
-    DJANGO_SETTINGS_MODULE=my_geonode.settings paver start
+```
+touch citydata/wsgi.py
 
-    # Using Custom Local Settings
-    cp my_geonode/local_settings.py.sample my_geonode/local_settings.py
-
-    vim my_geonode/wsgi.py
-    --> os.environ.setdefault("DJANGO_SETTINGS_MODULE", "my_geonode.local_settings")
-
-    DJANGO_SETTINGS_MODULE=my_geonode.local_settings paver reset
-    DJANGO_SETTINGS_MODULE=my_geonode.local_settings paver setup
-    DJANGO_SETTINGS_MODULE=my_geonode.local_settings paver sync
-    DJANGO_SETTINGS_MODULE=my_geonode.local_settings paver start
+DJANGO_SETTINGS_MODULE=citydata.settings paver reset
+DJANGO_SETTINGS_MODULE=citydata.settings paver setup
+DJANGO_SETTINGS_MODULE=citydata.settings paver sync --> password authentication failed for user "geonode"
+DJANGO_SETTINGS_MODULE=citydata.settings paver start --> password authentication failed for user "geonode"
 ```
 
 3. Access GeoNode from browser:
 
+```
     http://localhost:8000/
+    ```
 
-.. note: default admin user is ``admin`` (with pw: ``admin``)
+**Note: default admin user is ``admin`` (with pw: ``admin``)**
 
-Start your server
------------------
+## Start your server
 
 You need Docker 1.12 or higher, get the latest stable official release for your platform.
 
@@ -76,19 +155,19 @@ You need Docker 1.12 or higher, get the latest stable official release for your 
 ```
 
     git clone https://github.com/GeoNode/geonode-project.git -b master
-    mkvirtualenv my_geonode
+    mkvirtualenv citydata
     pip install Django==1.11.16
 
-    django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile my_geonode
+    django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile citydata
 
-    cd my_geonode
+    cd citydata
 ```
 
 2. Run `docker-compose` to start it up (get a cup of coffee or tea while you wait)
 
    Remember to update "wsgi.py" in case you are using "local_settings"
-   vim my_geonode/wsgi.py
-   --> os.environ.setdefault("DJANGO_SETTINGS_MODULE", "my_geonode.local_settings")
+   vim citydata/wsgi.py
+   --> os.environ.setdefault("DJANGO_SETTINGS_MODULE", "citydata.local_settings")
 
  ```
      docker-compose build --no-cache
