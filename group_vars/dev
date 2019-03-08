@@ -3,8 +3,8 @@
 # Then store IP addresses above and uncomment
 # assign_p**_ip vars in roles/create_stack/vars/main.yml
 #
-# prv_ip: 172.31.21.146 # Private IP address of server
-# pub_ip: 54.215.225.243 # Public IP address of server
+private_ip: 10.116.2.40 # Private IP address of server
+# public_ip: 54.215.225.243 # Public IP address of server
 
 admin_pass: '{{ admin_pass_dev }}'
 django_secret_key: '{{ django_secret_key_dev }}'
