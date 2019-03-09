@@ -1,63 +1,94 @@
 ---
-- name: Get geonode from repo
-  git:
-    repo: https://github.com/GeoNode/geonode-project.git
-    dest: '~'
-
-# - name: Install libgdal
-#   apt:
-#     name: libgdal-dev
-#   become: true
+# - name: Get geonode-project from repo
+#   git:
+#     repo: https://github.com/GeoNode/geonode-project.git
+#     dest: ~/geonode-project
 #
+# - name: Install Django in virtualenv
+#   pip:
+#     virtualenv: ~/.virtualenvs/{{ project | lower }}
+#     name: Django=={{ django_version }}
+#
+# - name: Create project
+#   shell: |
+#     source ~/.bashrc && source ~/.virtualenvs/{{ project | lower }}/bin/activate &&
+#     django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile {{ project | lower }}
+#   args:
+#     creates: "~/{{ project | lower }}"
+#     executable: /bin/bash
+#
+# - name: Install Geonode from requirements
+#   pip:
+#     virtualenv: ~/.virtualenvs/{{ project | lower }}
+#     requirements: requirements.txt
+#     state: latest
+#   args:
+#     chdir: ~/{{ project | lower }}
+#
+# - name: Install Geonode
+#   pip:
+#     virtualenv: ~/.virtualenvs/{{ project | lower }}
+#     name: .
+#     state: latest
+#     extra_args: -e
+#   args:
+#     chdir: ~/{{ project | lower }}
 
-- name: Install Django in virtualenv
+- name: Get GDAL version
+  command: gdal-config --version
+  register: gdal_version
+
+- debug:
+    var: gdal_version.stdout
+
+- name: Get pyGDAL version
+  shell: "pip install pygdal=={{ gdal_version.stdout }} 2>&1 | grep -oP '(?<=: )(.*)(?=\\))' | grep -oh {{ gdal_version.stdout }}\\.[0-9]"
+  register: pygdal_version
+  # no_log: true
+  # ignore_errors: true
+
+- debug:
+    var: pygdal_version.stdout
+
+- name: Install pyGDAL
   pip:
-    virtualenv: ~/.virtualenvs/{{ project }}
-    name: Django=={{ django_version }}
-
-- name: Source bashrc to prepare virtualenv
-  shell: |
-    . ~/.bashrc &&
-    mkvirtualenv {{ project }} &&
-    pip install Django=={{ django_version }} &&
-    django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile {{ project }} &&
-    cd citydata &&
-    pip install -r requirements.txt --upgrade &&
-    pip install -e . --upgrade &&
-    GDAL_VERSION=`gdal-config --version` &&
-    PYGDAL_VERSION="$(pip install pygdal==$GDAL_VERSION 2>&1 | grep -oP '(?<=: )(.*)(?=\))' | grep -oh $GDAL_VERSION\.[0-9])" &&
-    pip install pygdal==$PYGDAL_VERSION
+    name: pygdal=={{ pygdal_version.stdout }}
+    virtualenv: ~/.virtualenvs/{{ project | lower }}
   args:
-    creates: "~/{{ project }}"
+    chdir: ~/{{ project | lower }}
 
 - name: Copy local_settings sample
-  command: cp citydata/local_settings.py.sample citydata/local_settings.py
+  command: cp {{ project | lower }}/local_settings.py.sample {{ project | lower }}/local_settings.py
   args:
-    chdir: ~/citydata
-    creates: "~/{{ project }}"
+    chdir: ~/{{ project | lower }}
+    creates: ~/{{ project | lower }}/{{ project | lower }}/local_settings.py
 
 - name: Apply Geonode PR 4154 part 1/2
   replace:
-    path: ~/.virtualenvs/{{ project }}/src/geonode/geonode/base/management/commands/updategeoip.py
-    regex: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+    path: ~/.virtualenvs/{{ project | lower }}/src/geonode/geonode/base/management/commands/updategeoip.py
+    regexp: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
     replace: https://build.geo-solutions.it/geonode/geoserver/latest/GeoLiteCity.dat.gz
 
 - name: Apply Geonode PR 4154 part 2/2
   replace:
-    path: ~/.virtualenvs/{{ project }}/src/geonode/geonode/base/management/commands/updategeoip.py
-    regex: r = requests.get(options['url'], stream=True, timeout=10)
+    path: ~/.virtualenvs/{{ project | lower }}/src/geonode/geonode/base/management/commands/updategeoip.py
+    regexp: r = requests.get(options['url'], stream=True, timeout=10)
     replace: r = requests.get(options['url'], stream=True, timeout=10, verify=False)
 
-- name: Restart Apache
-  service:
-    name: apache2
-    state:  restarted
+- name: Restart Django
+  file:
+    path: ~/{{ project | lower }}//{{ project | lower }}/wsgi.py
+    state:  touch
 
-- name: Source bashrc to build and start Geonode
+- name: Paver commands
   shell: |
-    . ~/.bashrc &&
-    export DJANGO_SETTINGS_MODULE=citydata.settings &&
-    paver reset &&
-    paver setup &&
-    paver sync &&
-    paver start
+    source ~/.bashrc && source ~/.virtualenvs/{{ project | lower }}/bin/activate &&
+    paver {{ item }}
+  args:
+    executable: /bin/bash
+    chdir: ~/{{ project | lower }}
+  with_items:
+    - reset
+    - setup
+    - sync
+    - start

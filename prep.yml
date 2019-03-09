@@ -1,3 +1,4 @@
+---
 - name: Prepare prep_servers
   hosts: all
   vars:

@@ -51,7 +51,7 @@ setup(
     ],
     license="BSD",
     keywords="{{ project_name }} geonode django",
-    url='https://github.com/{{ project_name }}/{{ project_name }}',
+    url='https://github.com/{{ repo_owner }}/{{ project_name | lower }}',
     packages=['{{ project_name }}',],
     include_package_data=True,
     zip_safe=False,
