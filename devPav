@@ -8,3 +8,6 @@
 
 [devPav]
 10.116.2.73
+
+[local]
+localhost envt=devPav ansible_connection=local ansible_python_interpreter=/usr/bin/python
