@@ -1,22 +1,36 @@
+---
 - name: Provision a GeoNode into Production
-  hosts: production
+  hosts: all
   remote_user: ubuntu
   vars:
-    app_name: {{ project_name }}
-    github_user: geonode
-    server_name: 0.0.0.0
+    app_name: geonode
+    # github_user: jondoig
+    server_name: 10.116.2.235
     deploy_user: ubuntu
-    code_repository: https://github.com/-----/{{ project_name }}.git" # e.g., "https://github.com/GeoNode/{{ project_name }}.git"
+    # code_repository: https://github.com/UNSW-CFRC/geonode-project.git" # e.g., "https://github.com/GeoNode/{{ project }}.git"
     branch_name: master
-    virtualenv_dir: "/home/ubuntu/.venvs"
-    site_url: "http://localhost:8000/" # The public url of the GeoNode instance
-    geoserver_url: "http://build.geonode.org/geoserver/latest/geoserver-2.14.x.war" # geoserver_url should match what is found in dev_config.yml
+    virtualenv_dir: "/home/ubuntu/.virtualenvs"
+    site_url: "http://{{ server_name }}:8000/" # The public url of the GeoNode instance
+    geoserver_url: "https://build.geo-solutions.it/geonode/geoserver/latest/geoserver-2.14.x.war" # geoserver_url should match what is found in dev_config.yml
     pg_max_connections: 100
     pg_shared_buffers: 128MB
     tomcat_xms: "1024M"
     tomcat_xmx: "2048M"
     nginx_client_max_body_size: "400M"
     letsencrypt: False
+    geonode_version: 2.10rc4
+    # github user who owns the repository
+    # if "geonode" is provided as a github user, this ansible role will create
+    # a geonode project template from scratch (demo mode)
+    # github_user: GeoNode
+    # git repository name
+    # defaults to the application name, but should be overriden if diffent
+    repo_name: geonode
+    db_region: ap-southeast-2
+    db_data_size: 200
+    db_metadata_size: 10
+    # server directory for the virtualenv that will be created to run the web app
+    virtualenv_dir: /home/{{deploy_user}}/.virtualenvs
   gather_facts: False
   pre_tasks:
     - name: Install python for Ansible
