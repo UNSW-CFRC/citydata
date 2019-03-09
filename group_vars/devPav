@@ -1,0 +1,56 @@
+---
+# Leave these blank for first time stack creation.
+# Then store IP addresses above and uncomment
+# assign_p**_ip vars in roles/create_stack/vars/main.yml
+#
+private_ip: # Private IP address of server
+# public_ip: 54.215.225.243 # Public IP address of server
+assign_private_ip: # '"PrivateIpAddress": "{{ private_ip }}",'
+
+ansible_ssh_private_key_file: ~/.ssh/CityData_nonProd.pem
+
+port: 8000 # 8000 for dev, 80 for test/prod
+envt_ingress_rules: |
+        "ingress6": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "SG{{ project }}"
+                },
+                "Description": "Dev: Tomcat HTTP",
+                "IpProtocol": "tcp",
+                "FromPort": "8000",
+                "ToPort": "8000",
+                "CidrIp": "0.0.0.0/0"
+            }
+        },
+        "ingress7": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "SG{{ project }}"
+                },
+                "Description": "Dev: Tomcat HTTP",
+                "IpProtocol": "tcp",
+                "FromPort": "8080",
+                "ToPort": "8080",
+                "CidrIp": "0.0.0.0/0"
+            }
+        },
+        "ingress8": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "SG{{ project }}"
+                },
+                "Description": "Dev: Postgresql",
+                "IpProtocol": "tcp",
+                "FromPort": "5432",
+                "ToPort": "5432",
+                "CidrIp": "0.0.0.0/0"
+            }
+        },
+
+admin_pass: '{{ admin_pass_dev }}'
+django_secret_key: '{{ django_secret_key_dev }}'
+aws_secret_key: '{{ aws_secret_key_dev }}'
