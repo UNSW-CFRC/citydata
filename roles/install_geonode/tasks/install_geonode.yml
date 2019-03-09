@@ -4,18 +4,60 @@
     repo: https://github.com/GeoNode/geonode-project.git
     dest: '~'
 
-- name: Manually create the initial virtualenv
-  command: mkvirtualenv citydata
+# - name: Install libgdal
+#   apt:
+#     name: libgdal-dev
+#   become: true
+#
+
+- name: Install Django in virtualenv
+  pip:
+    virtualenv: ~/.virtualenvs/{{ project }}
+    name: Django=={{ django_version }}
+
+- name: Source bashrc to prepare virtualenv
+  shell: |
+    . ~/.bashrc &&
+    mkvirtualenv {{ project }} &&
+    pip install Django=={{ django_version }} &&
+    django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile {{ project }} &&
+    cd citydata &&
+    pip install -r requirements.txt --upgrade &&
+    pip install -e . --upgrade &&
+    GDAL_VERSION=`gdal-config --version` &&
+    PYGDAL_VERSION="$(pip install pygdal==$GDAL_VERSION 2>&1 | grep -oP '(?<=: )(.*)(?=\))' | grep -oh $GDAL_VERSION\.[0-9])" &&
+    pip install pygdal==$PYGDAL_VERSION
   args:
     creates: "~/{{ project }}"
 
-- name: Install django
-  pip:
-     install
-     name: Django=={{ django_version }}
+- name: Copy local_settings sample
+  command: cp citydata/local_settings.py.sample citydata/local_settings.py
+  args:
+    chdir: ~/citydata
+    creates: "~/{{ project }}"
 
-     # Not sure this is the right module
-    # django_manage
-    #   app_path: "~/{{ project}}"
-    #   command: startproject
-    #     --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile my_geonode
+- name: Apply Geonode PR 4154 part 1/2
+  replace:
+    path: ~/.virtualenvs/{{ project }}/src/geonode/geonode/base/management/commands/updategeoip.py
+    regex: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+    replace: https://build.geo-solutions.it/geonode/geoserver/latest/GeoLiteCity.dat.gz
+
+- name: Apply Geonode PR 4154 part 2/2
+  replace:
+    path: ~/.virtualenvs/{{ project }}/src/geonode/geonode/base/management/commands/updategeoip.py
+    regex: r = requests.get(options['url'], stream=True, timeout=10)
+    replace: r = requests.get(options['url'], stream=True, timeout=10, verify=False)
+
+- name: Restart Apache
+  service:
+    name: apache2
+    state:  restarted
+
+- name: Source bashrc to build and start Geonode
+  shell: |
+    . ~/.bashrc &&
+    export DJANGO_SETTINGS_MODULE=citydata.settings &&
+    paver reset &&
+    paver setup &&
+    paver sync &&
+    paver start
