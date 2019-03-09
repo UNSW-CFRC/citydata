@@ -57,4 +57,4 @@
         - unzip
     - setup: # aka gather_facts
   roles:
-    - geonode
+     - { role: GeoNode.geonode }
