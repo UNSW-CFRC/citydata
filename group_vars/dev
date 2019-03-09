@@ -5,6 +5,7 @@
 #
 private_ip: 10.116.2.40 # Private IP address of server
 # public_ip: 54.215.225.243 # Public IP address of server
+assign_private_ip: '"PrivateIpAddress": "{{ private_ip }}",'
 
 port: 8000 # 8000 for dev, 80 for test/prod
 envt_ingress_rules: |
