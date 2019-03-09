@@ -1,4 +1,4 @@
-10.116.2.40 envt=dev ansible_python_interpreter=/usr/bin/python2
+10.116.2.40 envt=dev
 
 [cityfutures]
 10.116.2.40

@@ -74,19 +74,8 @@ You should now be logged into the CityData server.
 Type `exit` to return to the Ansible control machine.
 
 ```bash
-ansible-playbook prep.yml -i ENV_py3
+ansible-playbook prep.yml -i ENV
 ```
-
-```bash
-ansible-playbook virtual.yml -i ENV_py2
-```
-
-
-> May need to remove or at least stop tomcat7.
-> I did that manually, not sure how it was installed or started,
-> could have been my script for all I know.
-
-> TODO: Complete these  instructions from geonode_install or raise_install
 
 ## Using a Python virtual environment
 
