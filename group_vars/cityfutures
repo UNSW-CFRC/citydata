@@ -8,6 +8,8 @@ country: Australia
 country_code: AU
 timezone: '{{ country }}/{{ city }}'
 
+repo_owner: UNSW-CFRC
+
 admin_email: citydata@unsw.edu.au
 
 tmp_sitename_short: '{{ project }} ({{ envt }})'
