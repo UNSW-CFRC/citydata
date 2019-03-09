@@ -7,9 +7,10 @@
       - libjpeg-dev
       - libxml2-dev
       - libxslt-dev
-      - postgresql
       - postgis
-      - postgresql-contrib
+      - postgresql-{{ postgres_version }}
+      - postgresql-contrib-{{ postgres_version }}
+      - postgis
       - python
       - python-oauthlib
       - python-pip
@@ -30,7 +31,7 @@
       # - ncdu
       # - openjdk-8-jre
       # - patch
-      # - postgresql-{{ postgres_version }}-postgis-scripts
+      # - postgresql-{{ postgres_version }}-postgis-{{ postgis_version }}-scripts
       # - python-dev
       # - python-gdal
       # - python-pexpect
