@@ -1,0 +1,32 @@
+[uwsgi]
+;unix socket (referenced in nginx configuration)
+socket = /tmp/%n.sock
+
+processes = 4
+max_request = 300
+
+# set mode of created UNIX socket
+chmod-socket = 666
+
+buffer-size = 32768
+
+# place timestamps into log
+log-date = true
+
+vacuum = true
+
+; project-level logging to the logs/ folder
+logto = /var/log/uwsgi/uwsgi-%n.log
+
+chdir = {{app_code_dir}}/%n
+module = {{main_module}}.wsgi
+
+;enable-threads = true
+
+virtualenv = {{virtualenv_dir}}/%n
+vacuum = true
+;env = DJANGO_SETTINGS_MODULE={{main_module}}.settings
+pidfile = /tmp/%n.pid
+;harakiri = 20 # respawn processes taking more than 20 seconds
+max-requests = 5000 # respawn processes after serving 5000 requests
+plugins = python,logfile
