@@ -1,7 +1,6 @@
-{{ project_name|title }}
-========================
+# CityData
 
-GeoNode template project. Generates a django project with GeoNode support.
+Generates a development CityData server.
 
 Developer Workshop
 ------------------
@@ -38,7 +37,7 @@ If available, use the public IP address for connecting with PuTTY (below), other
 
 Use PuTTY or similar to SSH from your laptop into the new CityData server. You will need a local copy of the key file CityData.ppk (or CityData.pem for Macs).
 
-For PuTTY use the following settings:  
+For PuTTY use the following settings:
 * Session > Host name: *CityData's private IP* (or public IP if no VPN is used)
 * Session > Connection type: SSH
 * Connection > Seconds between keepalives: 120
@@ -264,21 +263,21 @@ To run the Ansible playbook use something like this:
 
 # Configuration
 
-Since this application uses geonode, base source of settings is ``geonode.settings`` module. It provides defaults for many items, which are used by geonode. This application has own settings module, ``{{project_name}}.settings``, which includes ``geonode.settings``. It customizes few elements:
+Since this application uses geonode, base source of settings is ``geonode.settings`` module. It provides defaults for many items, which are used by geonode. This application has own settings module, ``citydata.settings``, which includes ``geonode.settings``. It customizes few elements:
  * static/media files locations - they will be collected and stored along with this application files by default. This is useful during development.
- * Adds ``{{project_name}}`` to installed applications, updates templates, staticfiles dirs, sets urlconf to ``{{project_name}}.urls``.
+ * Adds ``citydata`` to installed applications, updates templates, staticfiles dirs, sets urlconf to ``citydata.urls``.
 
-Whether you deploy development or production environment, you should create additional settings file. Convention is to make ``{{project_name}}.local_settings`` module. It is recommended to use ``{{project_name}}/local_settings.py``.. That file contains small subset of settings for edition. It should:
+Whether you deploy development or production environment, you should create additional settings file. Convention is to make ``citydata.local_settings`` module. It is recommended to use ``citydata/local_settings.py``.. That file contains small subset of settings for edition. It should:
  * not be versioned along with application (because changes you make for your private deployment may become public),
  * have customized at least ``DATABASES``, ``SECRET_KEY`` and ``SITEURL``.
 
 You can add more settings there, note however, some settings (notably ``DEBUG_STATIC``, ``EMAIL_ENABLE``, ``*_ROOT``, and few others) can be used by other settings, or as condition values, which change other settings. For example, ``EMAIL_ENABLE`` defined in ``geonode.settings`` enables whole email handling block, so if you disable it in your ``local_settings``, derived settings will be preserved. You should carefully check if additional settings you change don't trigger other settings.
 
-To illustrate whole concept of chained settings:  
+To illustrate whole concept of chained settings:
 ```
     |  GeoNode configuration |             |   Your application default    |             |  (optionally) Your deployment(s) |
     |                        |             |        configuration          |             |                                  |
     |------------------------|-------------|-------------------------------|-------------|----------------------------------|
     |                        | included by |                               | included by |                                  |
-    |   geonode.settings     |     ->      |  {{project_name}}.settings    |      ->     |  {{project_name}}.local_settings |
+    |   geonode.settings     |     ->      |  citydata.settings    |      ->     |  citydata.local_settings |
 ```
