@@ -34,7 +34,7 @@ If available, use the public IP address for connecting with PuTTY (below), other
 
 ## Prepare server
 
-### Authorise the control machine to SSH to the server
+### Login to the new server (optional)
 
 Use PuTTY or similar to SSH from your laptop into the new CityData server. You will need a local copy of the key file CityData.ppk (or CityData.pem for Macs).
 
@@ -47,20 +47,14 @@ For PuTTY use the following settings:
 
 The first time you SSH to the new server you will be asked to confirm.
 
-On the Ansible control machine:
+### Authorise the control machine to SSH to the server
+
+Ensure the Ansible control machine has the CityData public key:
 ```bash
-cat ~/.ssh/id_rsa.pub
+ls ~/.ssh/CityData_nonProd.pem
 ```
 
-Copy the content of id_rsa.pub to your clipboard.
-
-On the CityData server:
-```bash
-vi ~/.ssh/authorized_keys
-```
-Paste from the clipboard to a new line at the end of the file.
-
-Now test the connection. On the Ansible control machine:
+Test the connection. On the Ansible control machine:
 ```bash
 ssh <CityData private IP>
 ```
