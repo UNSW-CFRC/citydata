@@ -9,10 +9,3 @@
     ansible_python_interpreter: /usr/bin/python2
   roles:
   - install_virtualenv
-
-- name: Install geonode ansible role on Ansible control
-  hosts: localhost
-  tasks:
-  - git:
-      repo: https://github.com/UNSW-CFRC/ansible-geonode.git
-      dest: roles/geonode
