@@ -22,7 +22,8 @@
       export SITE_HOST_NAME={{ private_ip }}
       export SITE_HOST_PORT={{ port }}
       export PATH=$PATH:$HOME/.virtualenvs/bin
-
+      export DJANGO_SETTINGS_MODULE={{ project }}.settings
+      alias activate="source ~/.virtualenvs/{{ project }}/bin"
 
 # export PROJECT_HOME=$HOME/
 # export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
