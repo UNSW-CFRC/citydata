@@ -1,0 +1,16 @@
+[targets]
+10.116.2.73 envt=dev
+
+[cityfutures]
+10.116.2.73
+localhost
+
+[small_sysdisk]
+10.116.2.73
+
+[dev]
+10.116.2.73
+localhost
+
+[local]
+localhost envt=dev ansible_connection=local ansible_python_interpreter=/usr/bin/python

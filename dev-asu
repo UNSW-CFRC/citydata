@@ -1,14 +1,14 @@
 [targets]
 10.116.2.73 envt=dev
 
-[cityfutures]
+[asu]
 10.116.2.73
 localhost
 
 [small_sysdisk]
 10.116.2.73
 
-[devPav]
+[dev]
 10.116.2.73
 localhost
 
