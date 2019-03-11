@@ -34,6 +34,27 @@
     state: absent
   when: stack_result is failed
 
-- name: print IP address(es)
+- name: Print IP address(es)
   debug:
-    msg: '{{ stack_result.stack_outputs }}'
+    msg: '{{ stack_result.stack_outputs.PrvIp }}'
+
+- name: Write IP address to inventory
+  replace:
+    path: '{{ playbook_dir }}/{{ envt }}'
+    regexp: \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}
+    replace: '{{ stack_result.stack_outputs.PrvIp }}'
+
+- name: Refresh inventory
+  meta: refresh_inventory
+
+- name: Write private IP group variable
+  replace:
+    path: '{{ playbook_dir }}/group_vars/{{ envt }}'
+    regexp: '^\s*private_ip\s*:\s*[^#]*'
+    replace: 'private_ip: {{ stack_result.stack_outputs.PrvIp }} '
+
+- name: Write group variable to assign private IP in stack
+  replace:
+    path: '{{ playbook_dir }}/group_vars/{{ envt }}'
+    regexp: '^\s*assign_private_ip\s*:\s*[^#]*'
+    replace: 'assign_private_ip: ''"PrivateIpAddress": "{{ ''{{ private_ip }}'' }}",'' '

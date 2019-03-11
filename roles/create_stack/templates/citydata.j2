@@ -2,7 +2,7 @@
     "Description": "{{ project }}",
     "AWSTemplateFormatVersion": "2010-09-09",
     "Outputs" : {
-        "{{ project }}PrvIp" : {
+        "PrvIp" : {
           "Value" : { "Fn::GetAtt" : [ "{{ project }}", "PrivateIp" ]},
           "Description" : "{{ project }} server's Private IP Address"
         },

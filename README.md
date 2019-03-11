@@ -19,9 +19,9 @@ Note: You can call your geonode project whatever you like following the naming c
 Now create the stack, including EC2 instance, volumes and security group:
 
 ```bash
-ansible-playbook stack.yml -i localhost_ENV --ask-vault-pass
+ansible-playbook stack.yml -i ENV --ask-vault-pass
 ```
-where ENV = dev, test or prod. E.g. localhost_test
+where ENV = dev, test or prod. E.g. test
 
 When prompted, enter the Ansible vault password for your project.
 

@@ -1,5 +1,10 @@
 ---
-- name: Prepare prep_servers
+- name: Create server
+  hosts: local
+  roles:
+  - create_stack
+
+- name: Prepare server
   hosts: targets
   vars:
     ansible_python_interpreter: /usr/bin/python3
@@ -12,3 +17,10 @@
     ansible_python_interpreter: /usr/bin/python2
   roles:
   - install_virtualenv
+
+- name: Install geonode
+  hosts: targets
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  roles:
+  - install_geonode

@@ -1,38 +1,38 @@
 ---
-# - name: Get geonode-project from repo
-#   git:
-#     repo: https://github.com/GeoNode/geonode-project.git
-#     dest: ~/geonode-project
-#
-# - name: Install Django in virtualenv
-#   pip:
-#     virtualenv: ~/.virtualenvs/{{ project | lower }}
-#     name: Django=={{ django_version }}
-#
-# - name: Create project
-#   shell: |
-#     source ~/.bashrc && source ~/.virtualenvs/{{ project | lower }}/bin/activate &&
-#     django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile {{ project | lower }}
-#   args:
-#     creates: "~/{{ project | lower }}"
-#     executable: /bin/bash
-#
-# - name: Install Geonode from requirements
-#   pip:
-#     virtualenv: ~/.virtualenvs/{{ project | lower }}
-#     requirements: requirements.txt
-#     state: latest
-#   args:
-#     chdir: ~/{{ project | lower }}
-#
-# - name: Install Geonode
-#   pip:
-#     virtualenv: ~/.virtualenvs/{{ project | lower }}
-#     name: .
-#     state: latest
-#     extra_args: -e
-#   args:
-#     chdir: ~/{{ project | lower }}
+- name: Get geonode-project from repo
+  git:
+    repo: https://github.com/GeoNode/geonode-project.git
+    dest: ~/geonode-project
+
+- name: Install Django in virtualenv
+  pip:
+    virtualenv: ~/.virtualenvs/{{ project | lower }}
+    name: Django=={{ django_version }}
+
+- name: Create project
+  shell: |
+    source ~/.bashrc && source ~/.virtualenvs/{{ project | lower }}/bin/activate &&
+    django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile {{ project | lower }}
+  args:
+    creates: "~/{{ project | lower }}"
+    executable: /bin/bash
+
+- name: Install Geonode from requirements
+  pip:
+    virtualenv: ~/.virtualenvs/{{ project | lower }}
+    requirements: requirements.txt
+    state: latest
+  args:
+    chdir: ~/{{ project | lower }}
+
+- name: Install Geonode
+  pip:
+    virtualenv: ~/.virtualenvs/{{ project | lower }}
+    name: .
+    state: latest
+    extra_args: -e
+  args:
+    chdir: ~/{{ project | lower }}
 
 - name: Get GDAL version
   command: gdal-config --version
@@ -64,6 +64,7 @@
     creates: ~/{{ project | lower }}/{{ project | lower }}/local_settings.py
 
 - name: Apply Geonode PR 4154 part 1/2
+  # HTTP not HTTPS because their certificate is invalid
   replace:
     path: ~/.virtualenvs/{{ project | lower }}/src/geonode/geonode/base/management/commands/updategeoip.py
     regexp: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
@@ -72,7 +73,7 @@
 - name: Apply Geonode PR 4154 part 2/2
   replace:
     path: ~/.virtualenvs/{{ project | lower }}/src/geonode/geonode/base/management/commands/updategeoip.py
-    regexp: r = requests.get(options['url'], stream=True, timeout=10)
+    regexp: 'r = requests.get\(options\[''url''\], stream=True, timeout=10\)'
     replace: r = requests.get(options['url'], stream=True, timeout=10, verify=False)
 
 - name: Restart Django
