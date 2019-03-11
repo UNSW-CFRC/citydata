@@ -1,10 +1,16 @@
-10.116.2.40 envt=dev
+[targets]
+10.116.2.73 envt=devPav
 
 [cityfutures]
-10.116.2.40
+10.116.2.73
+localhost
 
 [small_sysdisk]
-10.116.2.40
+10.116.2.73
 
-[dev]
-10.116.2.40
+[devPav]
+10.116.2.73
+localhost
+
+[local]
+localhost envt=devPav ansible_connection=local ansible_python_interpreter=/usr/bin/python
