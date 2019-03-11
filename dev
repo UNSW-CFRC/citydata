@@ -1,5 +1,5 @@
 [targets]
-10.116.2.73 envt=devPav
+10.116.2.73 envt=dev
 
 [cityfutures]
 10.116.2.73
@@ -13,4 +13,4 @@ localhost
 localhost
 
 [local]
-localhost envt=devPav ansible_connection=local ansible_python_interpreter=/usr/bin/python
+localhost envt=dev ansible_connection=local ansible_python_interpreter=/usr/bin/python
