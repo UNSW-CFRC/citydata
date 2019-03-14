@@ -61,4 +61,14 @@
     - reset
     - setup
     - sync
-    - start
+
+- name: Paver start
+  shell: |
+    source ~/.bashrc && source ~/.virtualenvs/{{ project | lower }}/bin/activate &&
+    paver start &
+    disown
+  args:
+    executable: /bin/bash
+    chdir: ~/{{ project | lower }}
+  async: 45
+  poll: 0
