@@ -34,28 +34,7 @@
   args:
     chdir: ~/{{ project | lower }}
 
-- name: Get GDAL version
-  command: gdal-config --version
-  register: gdal_version
-
-- debug:
-    var: gdal_version.stdout
-
-- name: Get pyGDAL version
-  shell: "pip install pygdal=={{ gdal_version.stdout }} 2>&1 | grep -oP '(?<=: )(.*)(?=\\))' | grep -oh {{ gdal_version.stdout }}\\.[0-9]"
-  register: pygdal_version
-  # no_log: true
-  # ignore_errors: true
-
-- debug:
-    var: pygdal_version.stdout
-
-- name: Install pyGDAL
-  pip:
-    name: pygdal=={{ pygdal_version.stdout }}
-    virtualenv: ~/.virtualenvs/{{ project | lower }}
-  args:
-    chdir: ~/{{ project | lower }}
+- include_tasks: install_pygdal.yml
 
 - name: Copy local_settings sample
   command: cp {{ project | lower }}/local_settings.py.sample {{ project | lower }}/local_settings.py
@@ -63,18 +42,8 @@
     chdir: ~/{{ project | lower }}
     creates: ~/{{ project | lower }}/{{ project | lower }}/local_settings.py
 
-- name: Apply Geonode PR 4154 part 1/2
-  # HTTP not HTTPS because their certificate is invalid
-  replace:
-    path: ~/.virtualenvs/{{ project | lower }}/src/geonode/geonode/base/management/commands/updategeoip.py
-    regexp: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
-    replace: https://build.geo-solutions.it/geonode/geoserver/latest/GeoLiteCity.dat.gz
-
-- name: Apply Geonode PR 4154 part 2/2
-  replace:
-    path: ~/.virtualenvs/{{ project | lower }}/src/geonode/geonode/base/management/commands/updategeoip.py
-    regexp: 'r = requests.get\(options\[''url''\], stream=True, timeout=10\)'
-    replace: r = requests.get(options['url'], stream=True, timeout=10, verify=False)
+- name: Patch GeoLite2 database install
+  include_tasks: patch_4154.yml
 
 - name: Restart Django
   file:
