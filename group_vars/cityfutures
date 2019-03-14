@@ -19,7 +19,7 @@ bing_key: AirNFUX63U0RgdpDPrc6jrTWGce1I-QOF-Z2GeCJ3q558EZXDt8Eh4VcdTxHYjEW
 
 google_key: AIzaSyDD2vgGXTnLr53NeeC0h2_JErwG9KL92fU
 
-aws_access_key: AKIAIU2UWAK5GMKAY4HA
+aws_access_key_dev: AKIAIU2UWAK5GMKAY4HA
 
 aws_secret_key_dev: !vault |
   $ANSIBLE_VAULT;1.1;AES256
