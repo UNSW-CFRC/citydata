@@ -13,4 +13,4 @@ localhost
 localhost
 
 [local]
-localhost envt=dev ansible_connection=local ansible_python_interpreter=/usr/bin/python
+localhost envt=dev org=cityfutures ansible_connection=local ansible_python_interpreter=/usr/bin/python
