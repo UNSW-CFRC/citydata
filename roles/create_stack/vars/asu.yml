@@ -1,6 +1,6 @@
 ---
 aws_region: us-west-1
-# aws_zone: us-west-1a
+aws_zone: us-west-1a
 
 vpc_id: vpc-cbfbd7ac
 subnet_id: subnet-75cfd012
