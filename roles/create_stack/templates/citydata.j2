@@ -184,6 +184,19 @@
                 "GroupId": {
                     "Ref": "SG{{ project }}"
                 },
+                "Description": "SSH from devops work 2",
+                "IpProtocol": "tcp",
+                "FromPort": "22",
+                "ToPort": "22",
+                "CidrIp": "{{ ssh_source_ip_devops_work2 }}"
+            }
+        },
+        "ingress6": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "SG{{ project }}"
+                },
                 "Description": "SSH from devops VPN",
                 "IpProtocol": "tcp",
                 "FromPort": "22",
