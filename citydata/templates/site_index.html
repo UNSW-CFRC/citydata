@@ -1,5 +1,13 @@
 {% extends 'index.html' %}
 {% load i18n %}
+
+{% block extra_head %}
+<style>
+  #wrap {margin-top: -110px;}
+</style>
+  {{ block.super }}
+{% endblock extra_head %}
+
 {% comment %}
 This is where you can override the hero area block. You can simply modify the content below or replace it wholesale to meet your own needs.
 {% endcomment %}
