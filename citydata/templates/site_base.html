@@ -2,8 +2,10 @@
 {% load i18n base_tags avatar_tags %}
 {% load static from staticfiles %}
 {% block extra_head %}
-      <link href="{{ STATIC_URL }}css/site_base.css" rel="stylesheet"/>
-{% endblock %}
+    <link href="{% static "css/site_base.css" %}" rel="stylesheet"/>
+    <!-- <link href="{% static "css/KER_remote_main.css" %}" rel="stylesheet"/> -->
+    {{ block.super }}
+{% endblock extra_head %}
 
 <!-- Start of header -->
 {% block header %}
