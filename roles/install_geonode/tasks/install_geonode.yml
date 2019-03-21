@@ -64,7 +64,8 @@
 
 - name: Paver start
   shell: |
-    source ~/.bashrc && source ~/.virtualenvs/{{ project | lower }}/bin/activate &&
+    source ~/.bashrc
+    source ~/.virtualenvs/{{ project | lower }}/bin/activate
     paver start &
     disown
   args:
