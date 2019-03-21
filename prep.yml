@@ -4,7 +4,7 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
   roles:
-  - prep_servers
+  - prep_server
 
 - name: Install virtualenv
   hosts: targets
