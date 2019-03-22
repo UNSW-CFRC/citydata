@@ -263,11 +263,11 @@ To run the Ansible playbook use something like this:
 
 # Configuration
 
-Since this application uses geonode, base source of settings is ``geonode.settings`` module. It provides defaults for many items, which are used by geonode. This application has own settings module, ``{{ project | lower }}.settings``, which includes ``geonode.settings``. It customizes few elements:
+Since this application uses geonode, base source of settings is ``geonode.settings`` module. It provides defaults for many items, which are used by geonode. This application has own settings module, ``{{ project_dir }}.settings``, which includes ``geonode.settings``. It customizes few elements:
  * static/media files locations - they will be collected and stored along with this application files by default. This is useful during development.
- * Adds ``{{ project | lower }}`` to installed applications, updates templates, staticfiles dirs, sets urlconf to ``{{ project | lower }}.urls``.
+ * Adds ``{{ project_dir }}`` to installed applications, updates templates, staticfiles dirs, sets urlconf to ``{{ project_dir }}.urls``.
 
-Whether you deploy development or production environment, you should create additional settings file. Convention is to make ``{{ project | lower }}.local_settings`` module. It is recommended to use ``{{ project | lower }}/local_settings.py``.. That file contains small subset of settings for edition. It should:
+Whether you deploy development or production environment, you should create additional settings file. Convention is to make ``{{ project_dir }}.local_settings`` module. It is recommended to use ``{{ project_dir }}/local_settings.py``.. That file contains small subset of settings for edition. It should:
  * not be versioned along with application (because changes you make for your private deployment may become public),
  * have customized at least ``DATABASES``, ``SECRET_KEY`` and ``SITEURL``.
 
@@ -279,5 +279,5 @@ To illustrate whole concept of chained settings:
     |                        |             |        configuration          |             |                                  |
     |------------------------|-------------|-------------------------------|-------------|----------------------------------|
     |                        | included by |                               | included by |                                  |
-    |   geonode.settings     |     ->      |  {{ project | lower }}.settings    |      ->     |  {{ project | lower }}.local_settings |
+    |   geonode.settings     |     ->      |  {{ project_dir }}.settings    |      ->     |  {{ project_dir }}.local_settings |
 ```

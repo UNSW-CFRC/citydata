@@ -11,9 +11,9 @@
 - include_tasks: install_java.yml
 
 # - name: Rename project
-#   command: mv project_name {{ project | lower }}
+#   command: mv project_name {{ project_dir }}
 #   args:
-#     creates: '{{ project | lower }}'
+#     creates: '{{ project_dir }}'
 #   delegate_to: localhost
 
 # - include_tasks: install_python_support.yml

@@ -6,57 +6,57 @@
 
 - name: Install Django in virtualenv
   pip:
-    virtualenv: ~/.virtualenvs/{{ project | lower }}
+    virtualenv: ~/.virtualenvs/{{ project_dir }}
     name: Django=={{ django_version }}
 
 - name: Create project
   shell: |
-    source ~/.bashrc && source ~/.virtualenvs/{{ project | lower }}/bin/activate &&
-    django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile {{ project | lower }}
+    source ~/.bashrc && source ~/.virtualenvs/{{ project_dir }}/bin/activate &&
+    django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile {{ project_dir }}
   args:
-    creates: "~/{{ project | lower }}"
+    creates: "~/{{ project_dir }}"
     executable: /bin/bash
 
 - name: Install Geonode from requirements
   pip:
-    virtualenv: ~/.virtualenvs/{{ project | lower }}
+    virtualenv: ~/.virtualenvs/{{ project_dir }}
     requirements: requirements.txt
     state: latest
   args:
-    chdir: ~/{{ project | lower }}
+    chdir: ~/{{ project_dir }}
 
 - name: Install Geonode
   pip:
-    virtualenv: ~/.virtualenvs/{{ project | lower }}
+    virtualenv: ~/.virtualenvs/{{ project_dir }}
     name: .
     state: latest
     extra_args: -e
   args:
-    chdir: ~/{{ project | lower }}
+    chdir: ~/{{ project_dir }}
 
 - include_tasks: install_pygdal.yml
 
 - name: Copy local_settings sample
-  command: cp {{ project | lower }}/local_settings.py.sample {{ project | lower }}/local_settings.py
+  command: cp {{ project_dir }}/local_settings.py.sample {{ project_dir }}/local_settings.py
   args:
-    chdir: ~/{{ project | lower }}
-    creates: ~/{{ project | lower }}/{{ project | lower }}/local_settings.py
+    chdir: ~/{{ project_dir }}
+    creates: ~/{{ project_dir }}/{{ project_dir }}/local_settings.py
 
 - name: Patch GeoLite2 database install
   include_tasks: patch_4154.yml
 
 - name: Restart Django
   file:
-    path: ~/{{ project | lower }}//{{ project | lower }}/wsgi.py
+    path: ~/{{ project_dir }}//{{ project_dir }}/wsgi.py
     state:  touch
 
 - name: Paver commands
   shell: |
-    source ~/.bashrc && source ~/.virtualenvs/{{ project | lower }}/bin/activate &&
+    source ~/.bashrc && source ~/.virtualenvs/{{ project_dir }}/bin/activate &&
     paver {{ item }}
   args:
     executable: /bin/bash
-    chdir: ~/{{ project | lower }}
+    chdir: ~/{{ project_dir }}
   with_items:
     - reset
     - setup
@@ -65,11 +65,11 @@
 - name: Paver start
   shell: |
     source ~/.bashrc
-    source ~/.virtualenvs/{{ project | lower }}/bin/activate
+    source ~/.virtualenvs/{{ project_dir }}/bin/activate
     paver start &
     disown
   args:
     executable: /bin/bash
-    chdir: ~/{{ project | lower }}
+    chdir: ~/{{ project_dir }}
   async: 45
   poll: 0

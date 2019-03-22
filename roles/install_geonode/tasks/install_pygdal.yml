@@ -18,6 +18,6 @@
 - name: Install pyGDAL
   pip:
     name: pygdal=={{ pygdal_version.stdout }}
-    virtualenv: ~/.virtualenvs/{{ project | lower }}
+    virtualenv: ~/.virtualenvs/{{ project_dir }}
   args:
-    chdir: ~/{{ project | lower }}
+    chdir: ~/{{ project_dir }}
