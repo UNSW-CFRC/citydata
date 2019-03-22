@@ -1,15 +1,15 @@
 [targets]
-10.116.2.73 envt=dev
+172.31.24.13 envt=dev
 
 [asu]
-10.116.2.73
+172.31.24.13
 localhost
 
 [small_sysdisk]
-10.116.2.73
+172.31.24.13
 
 [dev]
-10.116.2.73
+172.31.24.13
 localhost
 
 [local]
