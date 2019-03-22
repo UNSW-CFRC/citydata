@@ -9,3 +9,9 @@
   become: true
 
 - include_tasks: setup_httpd.yml
+
+- name: Set site hostname for Django and Apache
+  replace:
+    path: ~/{{ project_dir }}/{{ project_dir }}/local_settings.py
+    regexp: '^\s*SITE_HOST_NAME\s*=.*'
+    replace: "SITE_HOST_NAME = os.getenv('SITE_HOST_NAME', '{{ http_hostname }}')"

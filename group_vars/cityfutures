@@ -8,6 +8,8 @@ country: Australia
 country_code: AU
 timezone: '{{ country }}/{{ city }}'
 
+http_hostname: '{{ private_ip }}'
+
 repo_owner: UNSW-CFRC
 
 admin_email: citydata@unsw.edu.au
