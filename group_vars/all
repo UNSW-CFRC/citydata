@@ -8,6 +8,8 @@ tmp_sitename_short: '{{ project }} ({{ envt }})'
 sitename_short: "{{ tmp_sitename_short | replace(' (prod)','') }}"
 sitename: '{{ sitename_short }} | {{ orgname }}'
 
+tomcat: tomcat8
+
 postgres_version: 9.5
 
 # Assumes host has small system disk so big things should be moved to /mnt/...
