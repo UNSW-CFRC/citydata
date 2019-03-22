@@ -15,3 +15,8 @@
     path: ~/{{ project_dir }}/{{ project_dir }}/local_settings.py
     regexp: '^\s*SITE_HOST_NAME\s*=.*'
     replace: "SITE_HOST_NAME = os.getenv('SITE_HOST_NAME', '{{ http_hostname }}')"
+
+- name: Set site name to appear in HTML page
+  lineinfile:
+    path: ~/{{ project_dir }}/{{ project_dir }}/local_settings.py
+    line: SITE_NAME='{{ project }}'
