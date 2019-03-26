@@ -20,3 +20,13 @@
   lineinfile:
     path: ~/{{ project_dir }}/{{ project_dir }}/local_settings.py
     line: SITE_NAME='{{ project }}'
+
+- name: Activate virtualenv from wsgi
+  blockinfile:
+    path: ~/{{ project_dir }}/{{ project_dir }}/wsgi.py
+    insertafter: os.environ.setdefault
+    block: |
+
+      # Activate your virtual env
+      activate_env=os.path.expanduser("~/.virtualenvs/{{ project_dir }}/bin/activate_this.py")
+      execfile(activate_env, dict(__file__=activate_env))
