@@ -52,6 +52,14 @@ header#header {
     margin-top: -46px;
 }
 
+@media (max-width: 991px) {
+  .home .jumbotron {
+    margin-top: -26px;
+  }
+  .home .header__sitename a {
+      color: #FFF;
+  }
+}
 /* Code from this page: https://www.w3schools.com/booTsTrap/tryit.asp?filename=trybs_affix&stacked=h */
 /* Note: Try to remove the following lines to see the effect of CSS positioning */
 .affix {
