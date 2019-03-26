@@ -1,7 +1,7 @@
 ---
 - name: Install custom static and template files
   copy:
-    src: '{{ playbook_dir }}/citydata/{{ org }}/{{ project_dir }}/{{ item }}/'
+    src: '{{ playbook_dir }}/geonode-project/{{ org }}/{{ project_dir }}/{{ item }}/'
     dest: ~/{{ project_dir }}/{{ project_dir }}/{{ item }}
   with_items:
     - static
