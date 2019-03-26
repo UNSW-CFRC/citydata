@@ -1,12 +1,12 @@
 ---
 - name: Create server
-  import_playbook: create_stack.yml
+  import_playbook: stack.yml
 
 - name: Prepare server
   import_playbook: prep.yml
 
 - name: Install virtualenv
-  import_playbook: install_virtualenv
+  import_playbook: virtual.yml
 
 - name: Install geonode
   import_playbook: geonode.yml
