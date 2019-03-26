@@ -56,7 +56,7 @@ header#header {
   .home .jumbotron {
     margin-top: -26px;
   }
-  .home .header__sitename a {
+  .asu-site-title {
       color: #FFF;
   }
 }
