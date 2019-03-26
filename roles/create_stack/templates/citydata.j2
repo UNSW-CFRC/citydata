@@ -6,7 +6,7 @@
           "Value" : { "Fn::GetAtt" : [ "{{ project_id }}", "PrivateIp" ]},
           "Description" : "{{ project_id }} server's Private IP Address"
         },
-        {{ output_public_ip}}
+        {{ output_public_ip }}
     },
     "Resources": {
         "{{ project_id }}": {
