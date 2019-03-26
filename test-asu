@@ -1,15 +1,15 @@
 [targets]
-172.31.20.105 envt=test org=asu
+172.31.20.125 envt=test org=asu
 
 [asu]
-172.31.20.105
+172.31.20.125
 localhost
 
 [small_sysdisk]
-172.31.20.105
+172.31.20.125
 
 [test]
-172.31.20.105
+172.31.20.125
 localhost
 
 [local]
