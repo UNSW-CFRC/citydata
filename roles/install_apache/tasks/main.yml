@@ -17,10 +17,11 @@
     regexp: '^\s*SITE_HOST_NAME\s*=.*'
     replace: "SITE_HOST_NAME = os.getenv('SITE_HOST_NAME', '{{ http_hostname }}')"
 
-- name: Set site name to appear in HTML page
+- name: Set site name for page title
   lineinfile:
     path: ~/{{ project_dir }}/{{ project_dir }}/local_settings.py
-    line: SITE_NAME='{{ project }}'
+    insertafter: '^\s*SITE_HOST_PORT\s*=.*'
+    line: "SITE_NAME = '{{ project }}'"
 
 - name: Activate virtualenv from wsgi
   blockinfile:

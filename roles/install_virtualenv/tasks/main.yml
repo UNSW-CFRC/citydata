@@ -20,7 +20,7 @@
       export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
       export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
       export SITE_HOST_NAME={{ inventory_hostname }}
-      export SITE_NAME={{ project }}
+      export SITE_NAME="{{ project }}"
       export SITE_HOST_PORT={{ port }}
       export PATH=$PATH:$HOME/.virtualenvs/bin
       export DJANGO_SETTINGS_MODULE={{ project_dir }}.settings

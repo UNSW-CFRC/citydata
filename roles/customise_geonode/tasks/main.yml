@@ -13,6 +13,12 @@
     command: collectstatic
     virtualenv: ~/.virtualenvs/{{ project_dir }}
 
+- name: Set page title
+  replace:
+    path: ~/{{ project_dir }}/{{ project_dir }}/templates/site_base.html
+    regexp: INSERT_PROJECT_HERE
+    replace: '{{ project }}'
+
 - name: Restart Django
   file:
     path: ~/{{ project_dir }}//{{ project_dir }}/wsgi.py
