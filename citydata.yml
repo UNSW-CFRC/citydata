@@ -14,6 +14,6 @@
 - name: Customise geonode
   import_playbook: custom.yml
 
-- name: Deploy into production
+- name: Deploy in production mode
   import_playbook: prod.yml
   when: not 'dev' in group_names
