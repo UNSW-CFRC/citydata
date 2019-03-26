@@ -8,6 +8,8 @@ country: America
 country_code: US
 timezone: '{{ country }}/{{ city }}'
 
+aws_keypair: KERData
+
 public_ip: 54.183.179.233 # Public IP address of server
 http_hostname: '{{ public_ip }}'
 

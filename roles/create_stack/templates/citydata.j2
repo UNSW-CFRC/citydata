@@ -16,7 +16,7 @@
                 "InstanceInitiatedShutdownBehavior": "stop",
                 "ImageId": "{{ ec2_image }}",
                 "InstanceType": "{{ ec2_type }}",
-                "KeyName": "{{ project_id }}",
+                "KeyName": "{{ aws_keypair }}",
                 "Monitoring": "false",
                 "Tags": [
                     {

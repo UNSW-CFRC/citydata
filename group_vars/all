@@ -4,6 +4,8 @@ envt_suffix: -{{ envt }}
 project_id: "{{ project | regex_replace(' ', '') }}"
 project_dir: '{{ project_id | lower }}'
 
+aws_keypair: '{{ project_id }}'
+
 tmp_sitename_short: '{{ project }} ({{ envt }})'
 sitename_short: "{{ tmp_sitename_short | replace(' (prod)','') }}"
 sitename: '{{ sitename_short }} | {{ orgname }}'
