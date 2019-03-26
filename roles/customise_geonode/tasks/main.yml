@@ -1,0 +1,20 @@
+---
+- name: Install custom static and template files
+  copy:
+    src: '{{ playbook_dir }}/citydata/{{ org }}/{{ project_dir }}/{{ item }}/'
+    dest: ~/{{ project_dir }}/{{ project_dir }}/{{ item }}
+  with_items:
+    - static
+    - templates
+
+- name: Copy custom files to be served by Apache
+  django_manage:
+    app_path: '~/{{ project_dir }}'
+    command: collectstatic
+    virtualenv: ~/.virtualenvs/{{ project_dir }}
+
+- name: Restart Apache
+  service:
+    name: apache2
+    state: restarted
+  become: true
