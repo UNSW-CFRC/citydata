@@ -8,7 +8,8 @@
     update_cache: yes
   become: true
 
-- include_tasks: setup_httpd.yml
+- name: setup HTTP daemon
+  include_tasks: setup_httpd.yml
 
 - name: Set site hostname for Django and Apache
   replace:
