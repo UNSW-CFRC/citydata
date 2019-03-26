@@ -13,8 +13,7 @@
     command: collectstatic
     virtualenv: ~/.virtualenvs/{{ project_dir }}
 
-- name: Restart Apache
-  service:
-    name: apache2
-    state: restarted
-  become: true
+- name: Restart Django
+  file:
+    path: ~/{{ project_dir }}//{{ project_dir }}/wsgi.py
+    state:  touch
