@@ -36,13 +36,22 @@
 
 - name: Print IP address(es)
   debug:
-    msg: '{{ stack_result.stack_outputs.PrvIp }}'
+    msg: '{{ stack_result.stack_outputs }}'
+
+- name: Use private IP for inventory
+  vars:
+    inventory_ip: '{{ stack_result.stack_outputs.PrvIp }}'
+
+- name: Use public IP for inventory
+  vars:
+    inventory_ip: '{{ stack_result.stack_outputs.PubIp }}'
+  when: use_public_ip
 
 - name: Write IP address to inventory
   replace:
     path: '{{ playbook_dir }}/{{ envt }}-{{ org }}'
     regexp: \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}
-    replace: '{{ stack_result.stack_outputs.PrvIp }}'
+    replace: '{{ inventory_ip }}'
 
 - name: Refresh inventory
   meta: refresh_inventory
@@ -58,3 +67,15 @@
     path: '{{ playbook_dir }}/group_vars/{{ envt }}'
     regexp: '^\s*assign_private_ip\s*:\s*[^#]*'
     replace: 'assign_private_ip: ''"PrivateIpAddress": "{{ ''{{ private_ip }}'' }}",'' '
+
+- name: Write public IP group variable
+  replace:
+    path: '{{ playbook_dir }}/group_vars/{{ envt }}'
+    regexp: '^\s*public_ip\s*:\s*[^#]*'
+    replace: 'public_ip: {{ stack_result.stack_outputs.PubIp }} '
+
+- name: Write group variable to assign public IP in stack
+  replace:
+    path: '{{ playbook_dir }}/group_vars/{{ envt }}'
+    regexp: '^\s*assign_public_ip\s*:\s*[^#]*'
+    replace: 'assign_public_ip: ''"PublicIpAddress": "{{ ''{{ public_ip }}'' }}",'' '

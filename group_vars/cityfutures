@@ -10,6 +10,8 @@ timezone: '{{ country }}/{{ city }}'
 
 http_hostname: '{{ private_ip }}'
 
+use_public_ip: false
+
 repo_owner: UNSW-CFRC
 
 admin_email: citydata@unsw.edu.au
