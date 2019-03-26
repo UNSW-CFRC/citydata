@@ -1,26 +1,16 @@
 ---
 - name: Create server
-  hosts: local
-  roles:
-  - create_stack
+  import_playbook: create_stack.yml
 
 - name: Prepare server
-  hosts: targets
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
-  roles:
-  - prep_server
+  import_playbook: prep.yml
 
 - name: Install virtualenv
-  hosts: targets
-  vars:
-    ansible_python_interpreter: /usr/bin/python2
-  roles:
-  - install_virtualenv
+  import_playbook: install_virtualenv
 
 - name: Install geonode
-  hosts: targets
-  vars:
-    ansible_python_interpreter: /usr/bin/python2
-  roles:
-  - install_geonode
+  import_playbook: geonode.yml
+
+- name: Deploy into production
+  import_playbook: prod.yml
+  when: not 'dev' in group_names
