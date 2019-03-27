@@ -1,9 +1,8 @@
 # CityData
 
-Generates a development CityData server.
+Generates a CityData server.
 
-Developer Workshop
-------------------
+## Developer Workshop
 
 Available at:
 
