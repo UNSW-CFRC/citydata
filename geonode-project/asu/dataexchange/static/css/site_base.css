@@ -60,6 +60,14 @@ header#header {
       color: #FFF;
   }
 }
+
+.home .big-search h1 {
+    background: #333333;
+    color: white;
+    padding-bottom: 3em;
+    padding-top: 1em;
+}
+
 /* Code from this page: https://www.w3schools.com/booTsTrap/tryit.asp?filename=trybs_affix&stacked=h */
 /* Note: Try to remove the following lines to see the effect of CSS positioning */
 .affix {
