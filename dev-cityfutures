@@ -1,15 +1,15 @@
 [targets]
-10.116.2.73 envt=dev
+10.116.2.90 envt=dev org=cityfutures
 
 [cityfutures]
-10.116.2.73
+10.116.2.90
 localhost
 
 [small_sysdisk]
-10.116.2.73
+10.116.2.90
 
 [dev]
-10.116.2.73
+10.116.2.90
 localhost
 
 [local]
