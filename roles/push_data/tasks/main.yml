@@ -1,0 +1,35 @@
+---
+- name: Generate SSH key
+  shell: ssh-keygen -f ~/.ssh/id_rsa -N ''
+  args:
+    creates: ~/.ssh/id_rsa.pub
+  delegate_to: '{{ data_src }}'
+
+- name: Read public key
+  shell: cat ~/.ssh/id_rsa.pub
+  register: key
+  delegate_to: '{{ data_src }}'
+
+- name: Authorise the key
+  authorized_key:
+    key: '{{ key.stdout_lines[0] }}'
+    user: '{{ ansible_user_id }}'
+
+- name: Push database backup from source server
+  synchronize:
+    src: /mnt/backup/pg_dumpall.custom
+    dest: /data/backup/pg_dumpall.custom
+  delegate_to: '{{ data_src }}'
+
+- name: Push uploaded files from source server
+  synchronize:
+    src: /mnt/data/geonode/geonode/geonode/uploaded/
+    dest: ~/citydata/citydata/uploaded/
+  delegate_to: '{{ data_src }}'
+  become: true
+
+- name: Push geoserver data from source server
+  synchronize:
+    src: /mnt/data/geoserver_data/
+    dest: ~/citydata/geoserver/data/
+  delegate_to: '{{ data_src }}'

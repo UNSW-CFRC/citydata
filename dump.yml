@@ -1,0 +1,7 @@
+---
+- name: Dump data
+  hosts: data_src
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  roles:
+  - dump_data
