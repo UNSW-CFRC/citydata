@@ -1,0 +1,7 @@
+---
+- name: Restore data
+  hosts: targets
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  roles:
+  - restore_data

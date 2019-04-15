@@ -4,6 +4,8 @@ envt_suffix: -{{ envt }}
 project_id: "{{ project | regex_replace(' ', '') }}"
 project_dir: '{{ project_id | lower }}'
 
+project_name: '{{ project_dir }}' #For restore using Docker
+
 aws_keypair: '{{ project_id }}'
 
 tmp_sitename_short: '{{ project }} ({{ envt }})'
