@@ -6,6 +6,10 @@ project_dir: '{{ project_id | lower }}'
 
 project_name: '{{ project_dir }}' #For restore using Docker
 
+repo_owner: UNSW-CFRC
+
+repo_url: 'https://github.com/{{ repo_owner }}/{{ project_name }}'
+
 aws_keypair: '{{ project_id }}'
 
 tmp_sitename_short: '{{ project }} ({{ envt }})'
