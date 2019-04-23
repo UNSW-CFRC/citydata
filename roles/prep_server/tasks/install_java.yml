@@ -11,27 +11,11 @@
   debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
   become: true
 
-- name: Remove Oracle Java 8 installer
-  apt:
-    name: oracle-java8-installer
-    state: absent
-  become: true
-
-- name: Install Oracle Java 8 installer
-  apt:
-    # name: oracle-java8-installer
-    deb: http://debian.opennms.org/dists/opennms-23/main/binary-all/oracle-java8-installer_8u131-1~webupd8~2_all.deb
-    state: present
-  become: true
-
-- name: Install Oracle Java 8 certificates
-  apt:
-    name: ca-certificates
-    state: latest
-  become: true
-
 - name: Install Oracle Java 8
   apt:
-    name: oracle-java8-set-default
+    name:
+      - oracle-java8-installer
+      - ca-certificates
+      - oracle-java8-set-default
     state: latest
   become: true
