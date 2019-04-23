@@ -1,0 +1,72 @@
+---
+# Install docker per  https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1
+
+- name: Uninstall docker
+  apt:
+    name: '{{ packages }}'
+    state: absent
+  vars:
+    packages:
+      - docker
+      - docker-engine
+      - docker.io
+      - containerd runc
+  become: true
+
+- name: Install packages to allow apt to use a repository over HTTPS
+  apt:
+    name: '{{ packages }}'
+  vars:
+    packages:
+      - apt-transport-https
+      # - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+  become: true
+
+- name: Add Docker’s official GPG key
+  # curl -fsSL  | sudo apt-key add -
+  # sudo apt-key fingerprint 0EBFCD88
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    id: 0EBFCD88
+  become: true
+
+- name: Set up the stable repository to install docker
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable"
+  become: true
+
+- name: Install docker CE
+  apt:
+    name: '{{ packages }}'
+    update_cache: yes
+  vars:
+    packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+  become: true
+
+# Install docker-compose per  https://docs.docker.com/compose/install/
+- name: Install docker-compose
+  # sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  # sudo chmod +x /usr/local/bin/docker-compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.24.0/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}
+    dest: /usr/local/bin/docker-compose
+    mode: 0755
+  become: true
+
+# - name: Install pip
+#   apt:
+#     name: python3-pip
+#     state: latest
+#   become: true
+#
+# - name: Uninstall docker-compose
+#   pip:
+#     name: docker-compose
+#     state: absent
+#   become: true
