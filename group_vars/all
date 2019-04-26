@@ -55,7 +55,6 @@ docker_dir: '{{ mount_point }}/docker'
 docker_fstype: ext4
 
 gnhome: '{{ big_dir }}/geonode'
-# gsdata: '{{ big_dir }}/geoserver_data'
 gsdata: '{{ big_dir }}/geoserver-data'
 
 port: 8000 # for dev mode
