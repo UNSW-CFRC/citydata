@@ -26,15 +26,11 @@
     dest: '~/{{ project_dir }}/'
   with_fileglob:
     - '{{ playbook_dir }}/.env'
-    - '{{ playbook_dir }}/dev_config.yml'
     - '{{ playbook_dir }}/docker*.yml'
     - '{{ playbook_dir }}/Dockerfile'
-    - '{{ playbook_dir }}/*.sh'
-    - '{{ playbook_dir }}/*.xml'
-    - '{{ playbook_dir }}/Makefile'
     - '{{ playbook_dir }}/*.py'
-    - '{{ playbook_dir }}/playbook.yml'
-    - '{{ playbook_dir }}/uswsgi.ini'
+    # - '{{ playbook_dir }}/playbook.yml'
+    - '{{ playbook_dir }}/uwsgi.ini'
 
 # - name: Customise docker config
 #   template:
