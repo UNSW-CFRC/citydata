@@ -2,14 +2,14 @@
 - name: Install custom static and template files
   copy:
     src: '{{ playbook_dir }}/geonode-project/{{ org }}/{{ project_dir }}/{{ item }}/'
-    dest: ~/{{ project_dir }}/geonode-project/{{ item }}
+    dest: ~/{{ project_dir }}/{{ project_dir }}/{{ item }}
   with_items:
     - static
     - templates
 
 - name: Set page title
   replace:
-    path: ~/{{ project_dir }}/geonode-project/templates/site_base.html
+    path: ~/{{ project_dir }}/{{ project_dir }}/templates/site_base.html
     regexp: INSERT_PROJECT_HERE
     replace: '{{ project }}'
 
@@ -24,5 +24,5 @@
 #
 # - name: Restart Django
 #   file:
-#     path: ~/{{ project_dir }}//geonode-project/wsgi.py
+#     path: ~/{{ project_dir }}//{{ project_dir }}/wsgi.py
 #     state:  touch
