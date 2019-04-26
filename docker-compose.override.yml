@@ -26,4 +26,4 @@ volumes:
   dbbackups:
     name: '{{ backup_dir }}'
   statics:
-    name: '{{ ansible_env.HOME }}//{{ project_dir }}/citydata/static'
+    name: '{{ ansible_env.HOME }}/{{ project_dir }}/{{ project_dir }}/{{ org }}/{{ project_name }}/static'
