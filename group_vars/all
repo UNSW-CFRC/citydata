@@ -29,13 +29,13 @@ secret_key: '{{ django_secret_key }}'
 
 # Assumes host has small system disk so big things should be moved to /mnt/...
 
-mount_point: /data # /mnt
+mount_point: /mnt # /data
 
 big_disk_device: xvdb
 big_disk_size: 100
 big_fstype: ext4
 # big_dir:  '{{ mount_point}}/sys'
-big_dir:  '{{ mount_point}}'
+big_dir:  '{{ mount_point}}/data'
 
 tmp_dir: '{{ big_dir }}/tmp'
 
