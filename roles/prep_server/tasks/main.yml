@@ -20,6 +20,15 @@
 - include_tasks: mv_docker_to_big_disk.yml
   when: "docker_check.stat.islnk is not defined or (docker_check.stat.islnk is defined and docker_check.stat.islnk == False)"
 
+- name: Create data dirs
+  file:
+    path: '{{ item }}'
+    state: directory
+  become: true
+  with_items:
+    - '{{ gsdata }}'
+    - '{{ postgres_data_directory }}'
+
 # - include_tasks: install_python2.7.yml
 
 - include_tasks: install_gn_packages.yml
