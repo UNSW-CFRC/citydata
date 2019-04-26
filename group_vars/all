@@ -16,7 +16,7 @@ tmp_sitename_short: '{{ project }} ({{ envt }})'
 sitename_short: "{{ tmp_sitename_short | replace(' (prod)','') }}"
 sitename: '{{ sitename_short }} | {{ orgname }}'
 
-site_url: "{{ private_ip |  default(public_ip) | default('localhost') }}"
+site_hostname: "{{ http_hostname | default('localhost') }}"
 
 tomcat: tomcat8
 

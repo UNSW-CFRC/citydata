@@ -3,20 +3,20 @@ services:
   django:
     environment:
       DEBUG: 'True'
-      SITEURL: http://{{ site_url }}/
-      ALLOWED_HOSTS: "[{{ site_url }}]"
-      GEOSERVER_PUBLIC_LOCATION: http://{{ site_url }}/gs/
+      SITEURL: http://{{ site_hostname }}/
+      ALLOWED_HOSTS: "[{{ site_hostname }}]"
+      GEOSERVER_PUBLIC_LOCATION: http://{{ site_hostname }}/gs/
 
   celery:
     environment:
       DEBUG: 'True'
-      SITEURL: http://{{ site_url }}/
-      ALLOWED_HOSTS: "[{{ site_url }}]"
-      GEOSERVER_PUBLIC_LOCATION: http://{{ site_url }}/gs/
+      SITEURL: http://{{ site_hostname }}/
+      ALLOWED_HOSTS: "[{{ site_hostname }}]"
+      GEOSERVER_PUBLIC_LOCATION: http://{{ site_hostname }}/gs/
 
   geoserver:
     environment:
-      NGINX_BASE_URL:
+      NGINX_BASE_URL: http://{{ site_hostname }}:80
 
 volumes:
   geoserver-data-dir:
