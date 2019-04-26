@@ -1,17 +1,18 @@
 ---
 # Install docker per  https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1
 
-- name: Uninstall docker
-  apt:
-    name: '{{ packages }}'
-    state: absent
-  vars:
-    packages:
-      - docker
-      - docker-engine
-      - docker.io
-      - containerd runc
-  become: true
+# Commented because it always comes up OK on a fresh-baked server
+# - name: Uninstall docker
+#   apt:
+#     name: '{{ packages }}'
+#     state: absent
+#   vars:
+#     packages:
+#       - docker
+#       - docker-engine
+#       - docker.io
+#       - containerd runc
+#   become: true
 
 - name: Install packages to allow apt to use a repository over HTTPS
   apt:

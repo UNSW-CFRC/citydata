@@ -3,8 +3,8 @@
 # Then store IP addresses above and uncomment
 # assign_p**_ip vars in roles/create_stack/vars/main.yml
 #
-private_ip: # 10.116.2.73 # Private IP address of server
-assign_private_ip: # '"PrivateIpAddress": "{{ private_ip }}",'
+private_ip: 10.116.2.90 # 10.116.2.73 # Private IP address of server
+assign_private_ip: '"PrivateIpAddress": "{{ private_ip }}",' # '"PrivateIpAddress": "{{ private_ip }}",'
 
 public_ip: # 52.53.225.136 # Public IP address of server
 assign_public_ip: # '"PublicIpAddress": "{{ public_ip }}",'

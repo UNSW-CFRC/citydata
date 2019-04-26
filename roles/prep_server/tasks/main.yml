@@ -10,7 +10,9 @@
 
 - include_tasks: install_docker.yml
 
-- include_tasks: install_java.yml
+# Let's proceed without Java for now. Package broken 17 April 2019 still not updated 26 April.
+# - include_tasks: install_java.yml
+# - include_tasks: install_java_workaround.yml
 
 # - name: Rename project
 #   command: mv project_name {{ project_dir }}

@@ -1,5 +1,5 @@
 ---
-- name: Install add-apt-repostory
+- name: Install add-apt-repository
   apt:
     name: software-properties-common
     state: latest
@@ -8,6 +8,7 @@
 - name: Add Oracle Java Repository
   apt_repository:
     repo: ppa:webupd8team/java
+    update_cache: yes
   become: true
 
 - name: Accept Java 8 License
@@ -18,40 +19,11 @@
     vtype: select
   become: true
 
-- name: Purge Oracle Java 8 installer
-  apt:
-    name: oracle-java8-installer
-    state: absent
-  become: true
-
-- name: Install Oracle Java 8 installer
-  apt:
-    # name: oracle-java8-installer
-    deb: http://debian.opennms.org/dists/opennms-23/main/binary-all/oracle-java8-installer_8u131-1~webupd8~2_all.deb
-    state: present
-  become: true
-
-- name: Install Oracle Java 8 certificates
-  apt:
-    name: ca-certificates
-    state: latest
-  become: true
-
 - name: Install Oracle Java 8
   apt:
-    # name: oracle-java8-set-default
-    deb: http://debian.opennms.org/dists/opennms-23/main/binary-all/oracle-java8-set-default_8u131-1~webupd8~2_all.deb
-    state: present
+    name:
+      - oracle-java8-installer
+      - ca-certificates
+      - oracle-java8-set-default
+    state: latest
   become: true
-
-  # apt:
-  #   name:
-  #     - oracle-java8-set-default
-  #   state: latest
-  # become: true
-# - name: Install Oracle Java 8
-#   unarchive:
-#     src: https://javadl.oracle.com/webapps/download/AutoDL?BundleId=238719_478a62b7d4e34b78b671c754eaaf38ab
-#     dest: /usr/lib/jvm/java-8-oracle
-#     remote_src: yes
-#   become: true

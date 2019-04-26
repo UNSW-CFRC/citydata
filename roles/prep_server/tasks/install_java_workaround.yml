@@ -1,0 +1,124 @@
+---
+# Workaround from https://stackoverflow.com/questions/46815897/jdk-8-is-not-installed-error-404-not-found/46815898#46815898
+- name: Install add-apt-repository
+  apt:
+    name: software-properties-common
+    state: latest
+  become: true
+
+# - name: Remove Oracle Java Repository
+#   apt_repository:
+#     repo: ppa:webupd8team/java
+#     state: absent
+#   become: true
+#
+# - name: Remove Java packages
+#   apt:
+#     name:
+#       - ca-certificates
+#       - oracle-java8-installer
+#       - oracle-java8-set-default
+#     state: absent
+#     purge: yes
+#   become: true
+#
+- name: Install Oracle Java 8 ca-certificates
+  apt:
+    name:
+      - ca-certificates
+    state: present
+  become: true
+
+- name: Add Oracle Java Repository
+  apt_repository:
+    repo: ppa:webupd8team/java
+    update_cache: yes
+  become: true
+
+- name: Manually download oracle-java8-installer deb package
+  get_url:
+    # url: http://debian.opennms.org/dists/opennms-23/main/binary-all/oracle-java8-installer_8u131-1~webupd8~2_all.deb
+    url: https://launchpad.net/~webupd8team/+archive/ubuntu/java/+files/oracle-java8-installer_8u201-1~webupd8~1_all.deb
+    dest: ~/
+
+- name: Install Oracle Java 8 ca-certificates
+  apt:
+    name:
+      - ca-certificates
+    state: present
+  become: true
+
+- name: Accept Java 8 License
+  debconf:
+    name: oracle-java8-installer
+    question: shared/accepted-oracle-license-v1-1
+    value: true
+    vtype: select
+  become: true
+
+# - name: Install pexpect
+#   pip:
+#     name: pexpect
+#   become: true
+#
+# - name: Add package files to /var/lib/dpkg/info
+#   expect:
+#     command: sudo dpkg -i ~/oracle-java8-installer_8u201-1~webupd8~1_all.deb
+#     creates: /var/lib/dpkg/info/oracle-java8-installer.config
+#     responses:
+#       .*: ''
+#   ignore_errors: true
+
+- name: Ask user to run dpkg and respond to prompts
+  pause:
+    prompt: 'Run this on target: sudo dpkg -i ~/oracle-java8-installer_8u201-1~webupd8~1_all.deb'
+
+- name: Get list of Java install files
+  shell: ls /var/lib/dpkg/info/oracle-java8-installer.*
+  register: java_install_files
+
+- name: Update 1 of 4 for Java install files
+  replace:
+    path: '{{ item }}'
+    regexp: JAVA_VERSION=8u201
+    replace: JAVA_VERSION=8u211
+  with_items: '{{ java_install_files.stdout_lines }}'
+  become: true
+
+- name: Update 2 of 4 for Java install files
+  replace:
+    path: '{{ item }}'
+    regexp: PARTNER_URL=http://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/
+    replace: PARTNER_URL=https://download.oracle.com/otn/java/jdk/8u211-b12/478a62b7d4e34b78b671c754eaaf38ab/
+  with_items: '{{ java_install_files.stdout_lines }}'
+  become: true
+
+- name: Update 3 of 4 for Java install files
+  replace:
+    path: '{{ item }}'
+    regexp: SHA256SUM_TGZ="cb700cc0ac3ddc728a567c350881ce7e25118eaf7ca97ca9705d4580c506e370"
+    replace: SHA256SUM_TGZ="c0b7e45330c3f79750c89de6ee0d949ed4af946849592154874d22abc9c4668d"
+  with_items: '{{ java_install_files.stdout_lines }}'
+  become: true
+
+- name: Update 4 of 4 for Java install files
+  replace:
+    path: '{{ item }}'
+    regexp: J_DIR=jdk1.8.0_201
+    replace: J_DIR=jdk1.8.0_211
+  with_items: '{{ java_install_files.stdout_lines }}'
+  become: true
+
+- name: Install Oracle Java 8
+  apt:
+    name:
+      - oracle-java8-installer
+    state: present
+  become: true
+
+- name: Set default java to Oracle Java 8
+  apt:
+    name:
+      - oracle-java8-set-default
+    state: present
+  become: true

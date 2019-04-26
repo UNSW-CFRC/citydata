@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+{% load i18n %}
+
+{% block extra_head %}
+<style>
+  #wrap {margin-top: -110px;}
+</style>
+  {{ block.super }}
+{% endblock extra_head %}
+
+{% comment %}
+This is where you can override the hero area block. You can simply modify the content below or replace it wholesale to meet your own needs.
+{% endcomment %}
+{% block hero %}
+<div class="jumbotron">
+  <div class="container">
+      <h1>{{custom_theme.jumbotron_welcome_title|default:_("Welcome")}}</h1>
+      <p></p>
+      <p>{{custom_theme.jumbotron_welcome_content|default:_("Data Exchange is a platform for sharing data and maps.")}}</p>
+      {% if not custom_theme.jumbotron_cta_hide %}
+      <p><a class="btn btn-default btn-lg" target="_blank" href="{{custom_theme.jumbotron_cta_link|default:_("http://docs.geonode.org/en/master/tutorials/users/index.html")}}" role="button">{{custom_theme.jumbotron_cta_text|default:_("Get Started &raquo;")}}</a></p>
+      {% endif %}
+  </div>
+</div>
+{% endblock hero %}

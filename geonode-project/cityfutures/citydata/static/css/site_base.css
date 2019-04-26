@@ -1,0 +1,105 @@
+body {
+  padding-top: 0;
+  background: none;
+}
+
+/* #wrap {
+    margin-top: -60px;
+} */
+
+#skip_to_content {
+    position: absolute;
+    left: -9999px;
+}
+
+header#header {
+    height: 94px;
+    color: black;
+}
+
+.navbar-inverse {
+    z-index: 1;
+    /* top: 94px; */
+}
+
+.navbar-inverse .navbar-nav > li > a:hover {
+    /* background-color: hsl(208, 56%, 39%); */
+    background-color:hsl(37, 56%, 39%);
+}
+
+.navbar-nav .dropdown-menu {
+  background-color: hsl(37, 56%, 39%);
+  border-top: 1px solid hsl(37, 56%, 39%);
+}
+
+.navbar-nav .dropdown-menu li a:hover {
+    background-color: hsl(37, 57%, 29%);
+    color: white;
+}
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: hsl(37, 56%, 39%);
+}
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+    background-color: #eeeeee;
+    border-color: hsl(37, 56%, 39%);
+}
+
+.home .jumbotron {
+    position: relative;
+    background: hsl(37, 56%, 39%);
+    margin-top: -46px;
+}
+
+@media (max-width: 991px) {
+  .home .jumbotron {
+    margin-top: -26px;
+  }
+  .asu-site-title {
+      color: #FFF;
+  }
+}
+
+.home .big-search h1 {
+    background: #333333;
+    color: white;
+    padding-bottom: 3em;
+    padding-top: 1em;
+}
+
+/* Code from this page: https://www.w3schools.com/booTsTrap/tryit.asp?filename=trybs_affix&stacked=h */
+/* Note: Try to remove the following lines to see the effect of CSS positioning */
+.affix {
+  top: 0;
+  width: 100%;
+  z-index: 9999 !important;
+}
+
+.affix + .container-fluid {
+  padding-top: 70px;
+}
+
+footer {
+  background: #333333;
+}
+
+.element-invisible {
+    position: absolute !important;
+    clip: rect(1px 1px 1px 1px);
+    clip: rect(1px, 1px, 1px, 1px);
+    overflow: hidden;
+    height: 1px;
+}
+
+.navbar-brand {
+    background: url(../img/logo.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-position-x: center;
+    background-position-y: center;
+    background-size: contain;
+    text-indent: -9999px;
+    height: 65px;
+    width: 200px;
+}

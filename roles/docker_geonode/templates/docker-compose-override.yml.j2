@@ -1,0 +1,29 @@
+version: '2.2'
+services:
+  django:
+    environment:
+      DEBUG: 'True'
+      SITEURL: http://{{ site_url }}/
+      ALLOWED_HOSTS: "[{{ site_url }}]"
+      GEOSERVER_PUBLIC_LOCATION: http://{{ site_url }}/gs/
+
+  celery:
+    environment:
+      DEBUG: 'True'
+      SITEURL: http://{{ site_url }}/
+      ALLOWED_HOSTS: "[{{ site_url }}]"
+      GEOSERVER_PUBLIC_LOCATION: http://{{ site_url }}/gs/
+
+  geoserver:
+    environment:
+      NGINX_BASE_URL:
+
+volumes:
+  geoserver-data-dir:
+    name: '{{ gsdata }}'
+  dbdata:
+    name: '{{ postgres_data_directory }}'
+  dbbackups:
+    name: '{{ backup_dir }}'
+  statics:
+    name: '{{ ansible_env.HOME }}//{{ project_dir }}/citydata/static'
