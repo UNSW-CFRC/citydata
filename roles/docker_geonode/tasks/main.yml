@@ -1,44 +1,25 @@
 ---
-# Use template not git to resolve the ansible variable project_name in multiple files
-#
-# - name: Git CityData
-#   git:
-#     repo: '{{ repo_url }}'
-#     dest: '{{ ansible_env.HOME }}//{{ project_dir }}'
-#   ignore_errors: True
-#   no_log: True
-#
-# - name: Template this project from Ansible Control to server
-#   template:
-#     src: '{{ playbook_dir }}/'
-#     dest: '{{ ansible_env.HOME }}/{{ project_dir }}/'
+- name: Git CityData
+  git:
+    repo: '{{ repo_url }}'
+    dest: '{{ ansible_env.HOME }}//{{ project_dir }}'
+  ignore_errors: True
+  no_log: True
 
-- name: Create project dir
-  file:
-    dest: '~/{{ project_dir }}'
-    state: directory
-
-- name: Create paths for project dir
-  file:
-    dest: '~/{{ project_dir }}/{{ item.path }}'
-    state: directory
-  with_filetree:
-    - '{{ playbook_dir }}/fixtures/'
-    - '{{ playbook_dir }}/geonode-project/'
-    - '{{ playbook_dir }}/geonode-project/'
-    - '{{ playbook_dir }}/package/'
-    - '{{ playbook_dir }}/scripts/'
-  when: item.state == 'directory'
-
-- name: Template this project from Ansible Control to server
+- name: Template geonode-project files from Ansible Control to server
   template:
-    src: '{{ item.src }}'
-    dest: '~/{{ project_dir }}/{{ item.path }}'
-  with_filetree:
-    - '{{ playbook_dir }}/fixtures/'
-    - '{{ playbook_dir }}/geonode-project/'
-    - '{{ playbook_dir }}/package/'
-    - '{{ playbook_dir }}/scripts/'
+    src: '{{ item }}'
+    dest: '~/{{ project_dir }}/geonode-project/'
+  with_fileglob:
+    - '{{ playbook_dir }}/geonode-project/*.py'
+    - '{{ playbook_dir }}/geonode-project/*.py.sample'
+
+- name: Template home dir files from Ansible Control to server
+  template:
+    src: '{{ item }}'
+    dest: '~/{{ project_dir }}/'
+  with_fileglob:
+    - '{{ playbook_dir }}/.env'
     - '{{ playbook_dir }}/dev_config.yml'
     - '{{ playbook_dir }}/docker*.yml'
     - '{{ playbook_dir }}/Dockerfile'
@@ -47,9 +28,7 @@
     - '{{ playbook_dir }}/Makefile'
     - '{{ playbook_dir }}/*.py'
     - '{{ playbook_dir }}/playbook.yml'
-    - '{{ playbook_dir }}/requirements.txt'
-    - '{{ playbook_dir }}/*.ini'
-  when: item.state == 'file'
+    - '{{ playbook_dir }}/uswsgi.ini'
 
 # - name: Customise docker config
 #   template:
