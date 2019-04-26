@@ -58,7 +58,7 @@
   become: true
 
 - name: Start the database
-  command: docker-compose -f docker-compose.yml up -d postgres
+  command: docker-compose -f docker-compose.yml up -d db
   args:
     chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
   become: true
