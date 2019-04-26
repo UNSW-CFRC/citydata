@@ -3,23 +3,27 @@ services:
   django:
     environment:
       DEBUG: 'True'
-      GEONODE_LB_HOST_IP: localhost
-      GEONODE_LB_PORT: 80
-      SITEURL: http://localhost/
-      ALLOWED_HOSTS: "['localhost']"
-      GEOSERVER_PUBLIC_LOCATION: http://localhost/gs/
+      SITEURL: http://{{ site_url }}/
+      ALLOWED_HOSTS: "[{{ site_url }}]"
+      GEOSERVER_PUBLIC_LOCATION: http://{{ site_url }}/gs/
 
   celery:
     environment:
       DEBUG: 'True'
-      GEONODE_LB_HOST_IP: localhost
-      GEONODE_LB_PORT: 80
-      SITEURL: http://localhost/
-      ALLOWED_HOSTS: "['localhost']"
-      GEOSERVER_PUBLIC_LOCATION: http://localhost/gs/
+      SITEURL: http://{{ site_url }}/
+      ALLOWED_HOSTS: "[{{ site_url }}]"
+      GEOSERVER_PUBLIC_LOCATION: http://{{ site_url }}/gs/
 
   geoserver:
     environment:
-      GEONODE_LB_HOST_IP: localhost
-      GEONODE_LB_PORT: 80
       NGINX_BASE_URL:
+
+volumes:
+  geoserver-data-dir:
+    name: '{{ gsdata }}'
+  dbdata:
+    name: '{{ postgres_data_directory }}'
+  dbbackups:
+    name: '{{ backup_dir }}'
+  statics:
+    name: '{{ ansible_env.HOME }}//{{ project_dir }}/citydata/static'

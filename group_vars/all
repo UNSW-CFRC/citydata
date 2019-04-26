@@ -24,6 +24,9 @@ postgres_version: 9.5
 
 postgres_data_directory: '{{ mount_point }}/postgresql/{{ postgres_version }}/main'
 
+# Variable used in docker scripts
+secret_key: '{{ django_secret_key }}'
+
 # Assumes host has small system disk so big things should be moved to /mnt/...
 
 mount_point: /data # /mnt

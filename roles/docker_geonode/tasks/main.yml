@@ -13,29 +13,53 @@
 #     src: '{{ playbook_dir }}/'
 #     dest: '{{ ansible_env.HOME }}/{{ project_dir }}/'
 
+- name: Create project dir
+  file:
+    dest: '~/{{ project_dir }}'
+    state: directory
+
 - name: Create paths for project dir
   file:
+    dest: '~/{{ project_dir }}/{{ item.path }}'
     state: directory
-    dest: '~/{{ item.path }}'
-  with_filetree: '{{ playbook_dir }}/'
+  with_filetree:
+    - '{{ playbook_dir }}/fixtures/'
+    - '{{ playbook_dir }}/geonode-project/'
+    - '{{ playbook_dir }}/geonode-project/'
+    - '{{ playbook_dir }}/package/'
+    - '{{ playbook_dir }}/scripts/'
   when: item.state == 'directory'
 
 - name: Template this project from Ansible Control to server
   template:
     src: '{{ item.src }}'
-    dest: '~/{{ item.path }}'
-  with_filetree: '{{ playbook_dir }}/'
+    dest: '~/{{ project_dir }}/{{ item.path }}'
+  with_filetree:
+    - '{{ playbook_dir }}/fixtures/'
+    - '{{ playbook_dir }}/geonode-project/'
+    - '{{ playbook_dir }}/package/'
+    - '{{ playbook_dir }}/scripts/'
+    - '{{ playbook_dir }}/dev_config.yml'
+    - '{{ playbook_dir }}/docker*.yml'
+    - '{{ playbook_dir }}/Dockerfile'
+    - '{{ playbook_dir }}/*.sh'
+    - '{{ playbook_dir }}/*.xml'
+    - '{{ playbook_dir }}/Makefile'
+    - '{{ playbook_dir }}/*.py'
+    - '{{ playbook_dir }}/playbook.yml'
+    - '{{ playbook_dir }}/requirements.txt'
+    - '{{ playbook_dir }}/*.ini'
   when: item.state == 'file'
 
-- name: Customise docker config
-  template:
-    src: docker-compose-override.yml.j2
-    dest: '{{ ansible_env.HOME }}/{{ project_dir }}/docker-compose-override.yml'
+# - name: Customise docker config
+#   template:
+#     src: docker-compose-override.yml.j2
+#     dest: '{{ ansible_env.HOME }}/{{ project_dir }}/docker-compose-override.yml'
 
-- name: Set vars in docker config
-  template:
-    src: '{{ playbook_dir }}/docker-compose.yml'
-    dest: '{{ ansible_env.HOME }}/{{ project_dir }}/docker-compose.yml'
+# - name: Set vars in docker config
+#   template:
+#     src: '{{ playbook_dir }}/docker-compose.yml'
+#     dest: '{{ ansible_env.HOME }}/{{ project_dir }}/docker-compose.yml'
 
 - name: Prepare the stack (without running) 1/2
   # docker_service:
