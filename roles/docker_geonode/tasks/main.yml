@@ -60,8 +60,11 @@
     chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
   become: true
 
+- debug: msg="{{ lookup('env','PATH') }} is an environment variable"
+
 - name: Initialise geoserver
-  command: docker-compose -f docker-compose.yml run --rm geoserver exit 0
+  shell: docker-compose -f docker-compose.yml run --rm geoserver exit 0
   args:
     chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
+    executable: /bin/bash
   become: true
