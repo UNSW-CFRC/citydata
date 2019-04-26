@@ -1,0 +1,22 @@
+---
+- name: Create folder on big disk with attributes like /var/lib/docker
+  file:
+    path: '{{ docker_dir }}'
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  become: true
+
+- name: Remove docker
+  file:
+    path: /var/lib/docker
+    state: absent
+  become: true
+
+- name: Link back from big disk to /var/lib/docker
+  file:
+    src: '{{ docker_dir }}'
+    dest: /var/lib/docker
+    state: link
+  become: true

@@ -46,6 +46,12 @@
                     "VolumeId": {
                       "Ref": "volGWC"
                     }
+                  },
+                  {
+                    "Device": "/dev/{{ docker_disk_device }}",
+                    "VolumeId": {
+                      "Ref": "volDocker"
+                    }
                   }
                 ],
                 "NetworkInterfaces": [
@@ -95,6 +101,19 @@
             "Properties": {
                 "AvailabilityZone": "{{ aws_zone }}",
                 "Size": "{{ gwc_disk_size }}",
+                "VolumeType": "gp2"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "1d252d89-effb-4317-b886-6ca4d302f6c0"
+                }
+            }
+        },
+        "volDocker": {
+            "Type": "AWS::EC2::Volume",
+            "Properties": {
+                "AvailabilityZone": "{{ aws_zone }}",
+                "Size": "{{ docker_disk_size }}",
                 "VolumeType": "gp2"
             },
             "Metadata": {

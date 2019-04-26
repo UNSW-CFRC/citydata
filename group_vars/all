@@ -49,6 +49,11 @@ gwc_disk_size: 300
 gwc_dir: '{{ mount_point }}/geowebcache'
 gwc_fstype: xfs
 
+docker_disk_device: xvdh
+docker_disk_size: 30
+docker_dir: '{{ mount_point }}/docker'
+docker_fstype: ext4
+
 gnhome: '{{ big_dir }}/geonode'
 # gsdata: '{{ big_dir }}/geoserver_data'
 gsdata: '{{ big_dir }}/geoserver-data'
