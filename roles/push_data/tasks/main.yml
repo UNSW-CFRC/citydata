@@ -20,6 +20,12 @@
     src: '{{ backup_dir }}/pg_dumpall.custom'
     dest: '{{ backup_dir }}/pg_dumpall.custom'
   delegate_to: '{{ data_src }}'
+  become: True
+
+- name: Create uploaded dir on target
+  file:
+    path: ~/{{ project_dir }}/{{ project_dir }}/uploaded
+    state: directory
 
 - name: Push uploaded files from source server
   synchronize:
