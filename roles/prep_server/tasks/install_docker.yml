@@ -54,3 +54,9 @@
     dest: /usr/local/bin/docker-compose
     mode: 0755
   become: true
+
+- name: Allow user to run docker
+  user:
+    name: '{{ ansible_user_id }}'
+    groups: docker
+  become: true
