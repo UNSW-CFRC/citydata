@@ -68,3 +68,58 @@
     chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
     executable: /bin/bash
   become: true
+
+# Assumes push.yml has been run to copy the backup database to the target server
+- name: Create the postgres database if previously dropped
+  command: docker exec -i db4{{ project_name }} createdb -U postgres postgres
+  become: True
+  ignore_errors: True
+
+- name: Restore database
+  shell:  cat {{ backup_dir }}/pg_dumpall.custom | docker exec -i db4{{ project_name }} psql -U postgres
+  become: True
+
+- name: Drop the postgres database
+  command: docker exec -i db4{{ project_name }} dropdb -U postgres postgres
+  become: True
+
+- name: Rename geonode database to postgres
+  command: docker exec -i db4{{ project_name }} psql -d template1 -U postgres -c "ALTER DATABASE geonode RENAME TO postgres;"
+  become: True
+  ignore_errors: True
+  no_log: True
+
+- name: Restore django uploaded files
+  command: docker cp {{ project_dir }}/uploaded django4{{ project_name }}:/uploaded
+  args:
+    chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
+  become: True
+
+- name: Restore the workspaces and styles of the geoserver data directory
+  command: docker cp {{ gsdata }}/{{ item }} geoserver4{{ project_name }}:/geoserver_data/data/{{ item }}
+  with_items:
+    - styles
+    - workspaces
+    # Not done coz no geoserver-data/data subdir:
+    # docker cp geodatadir/data/. spcgeonode_geoserver_1:/spcgeonode-geodatadir/data
+    # - data
+  become: True
+
+- name: Fix inconsistency that prevents migrations
+  command: docker exec -i db4{{ project_name }} psql -U postgres -c "ALTER TABLE public.layers_layer DROP COLUMN service_id;"
+  become: True
+  ignore_errors: True
+  no_log: True
+
+- name: Migrate with fake initial
+  command: docker-compose -f docker-compose.yml run --rm --entrypoint "" django python manage.py migrate --fake-initial
+  args:
+    chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
+  become: True
+
+# - name: Create the SQL diff to fix the schema
+#   # TODO : upstream some changes to django-extensions for this to work directly
+#   command: docker-compose -f docker-compose.yml run --rm --entrypoint "" django /bin/sh -c "DJANGO_COLORS=nocolor python manage.py sqldiff -ae" > fix.sql
+#   args:
+#     chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
+#   become: True
