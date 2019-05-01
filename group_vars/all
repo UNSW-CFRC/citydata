@@ -20,6 +20,8 @@ site_hostname: "{{ http_hostname | default('localhost') }}"
 
 tomcat: tomcat8
 
+docker_version: 1.19.0 # 1.19.0 per Geonode doco. 1.24.0 per docker install doco
+
 postgres_version: 9.5
 
 postgres_data_directory: '{{ mount_point }}/postgresql/{{ postgres_version }}/main'
