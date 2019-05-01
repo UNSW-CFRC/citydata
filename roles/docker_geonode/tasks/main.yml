@@ -6,6 +6,12 @@
   ignore_errors: True
   no_log: True
 
+- name: rename subdir to project_dir
+  command: mv geonode-project {{ project_dir }}
+  args:
+    chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
+    creates: '{{ ansible_env.HOME }}/{{ project_dir }}/{{ project_dir }}'
+
 - name: Template geonode-project files from Ansible Control to server
   template:
     src: '{{ item }}'
@@ -13,12 +19,6 @@
   with_fileglob:
     - '{{ playbook_dir }}/geonode-project/*.py'
     - '{{ playbook_dir }}/geonode-project/*.py.sample'
-
-- name: rename subdir to project_dir
-  command: mv geonode-project {{ project_dir }}
-  args:
-    chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
-    creates: '{{ ansible_env.HOME }}/{{ project_dir }}/{{ project_dir }}'
 
 - name: Template home dir files from Ansible Control to server
   template:
