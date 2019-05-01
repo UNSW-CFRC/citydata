@@ -1,0 +1,19 @@
+---
+# Leave these blank for first time stack creation.
+# Then store IP addresses above and uncomment
+# assign_p**_ip vars in roles/create_stack/vars/main.yml
+#
+private_ip: 10.116.2.55 # Private IP address of server
+assign_private_ip: '"PrivateIpAddress": "{{ private_ip }}",' # '"PrivateIpAddress": "{{ private_ip }}",'
+public_ip: # 52.53.225.136 # Public IP address of server
+assign_public_ip: # '"PublicIpAddress": "{{ public_ip }}",' # '"PublicIpAddress": "{{ public_ip }}",'
+
+ansible_ssh_private_key_file: ~/.ssh/CityData_nonProd.pem
+
+# port: 80 # 8000 for dev, 80 for test/prod
+envt_ingress_rules:
+
+aws_access_key: '{{ aws_access_key_dev }}'
+aws_secret_key: '{{ aws_secret_key_dev }}'
+django_secret_key: '{{ django_secret_key_dev }}'
+admin_pass: '{{ admin_pass_dev }}'
