@@ -1,15 +1,29 @@
 ---
-- name: Move docker to big disk
-  shell: mv /var/lib/docker/* {{ docker_dir }}
-  args:
-    creates: '{{ docker_dir }}/containers'
+- name: Point docker at big disk
+  replace:
+    path: /lib/systemd/system/docker.service
+    regexp: '^\s*ExecStart\s*=.*$'
+    replace: ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -g /mnt/docker
   become: true
+
+- name: Restart docker
+  systemd:
+    name: docker
+    daemon_reload: yes
+    state: restarted
+  become: true
+
+- name: Check if default docker lib is a directory
+  stat:
+    path: /var/lib/docker
+  register: old_dir
 
 - name: Remove docker directory
   file:
     path: /var/lib/docker
     state: absent
   become: true
+  when: old_dir.stat.isdir is defined and old_dir.stat.isdir
 
 - name: Link back from big disk to /var/lib/docker
   file:
