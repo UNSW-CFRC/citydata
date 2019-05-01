@@ -9,7 +9,7 @@
 - name: Template geonode-project files from Ansible Control to server
   template:
     src: '{{ item }}'
-    dest: '~/{{ project_dir }}/geonode-project/'
+    dest: '~/{{ project_dir }}/{{ project_dir }}/'
   with_fileglob:
     - '{{ playbook_dir }}/geonode-project/*.py'
     - '{{ playbook_dir }}/geonode-project/*.py.sample'

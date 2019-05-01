@@ -1,12 +1,12 @@
 ---
 - name: Allow access to dump dir
   file:
-    path: /mnt/backup
+    path: '{{ backup_dir }}'
     mode: 0777
 
 - name: Trust connection from localhost
   replace:
-    path: /etc/postgresql/9.5/main/pg_hba.conf
+    path: /etc/postgresql/{{ postgres_version }}/main/pg_hba.conf
     regexp: 'host\s+all\s+all\s+127.0.0.1/32\s+md5'
     replace: 'host    all             all             127.0.0.1/32            trust'
   become: true
@@ -22,6 +22,6 @@
 - name: Dump the database
   command: 'pg_dumpall --host=127.0.0.1 --file=pg_dumpall.custom'
   args:
-    chdir: /mnt/backup
+    chdir: '{{ backup_dir }}'
   become_user: postgres
   become: true
