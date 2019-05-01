@@ -1,5 +1,5 @@
 [targets]
-10.116.2.46 envt=test org=cityfutures data_src=0.0.0.0.0
+10.116.2.46 envt=test org=cityfutures data_src=10.116.2.31
 
 [cityfutures]
 10.116.2.46
@@ -13,7 +13,7 @@ localhost
 localhost
 
 [data_src]
-10.116.2.46 data_src=0.0.0.0.0
+10.116.2.46 data_src=10.116.2.31
 
 [local]
 localhost envt=test org=cityfutures ansible_connection=local ansible_python_interpreter=/usr/bin/python
