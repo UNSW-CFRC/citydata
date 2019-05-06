@@ -10,8 +10,20 @@ assign_public_ip: # '"PublicIpAddress": "{{ public_ip }}",' # '"PublicIpAddress"
 
 ansible_ssh_private_key_file: ~/.ssh/CityData_nonProd.pem
 
-# port: 80 # 8000 for dev, 80 for test/prod
-envt_ingress_rules:
+envt_ingress_rules: |
+        "ingress7": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "SG{{ project_id }}"
+                },
+                "Description": "Push data from source",
+                "IpProtocol": "tcp",
+                "FromPort": "22",
+                "ToPort": "22",
+                "CidrIp": "{{ data_src }}/32"
+            }
+        },
 
 aws_access_key: '{{ aws_access_key_dev }}'
 aws_secret_key: '{{ aws_secret_key_dev }}'
