@@ -2,7 +2,6 @@
 - name: Install geonode with docker
   hosts: targets
   vars:
-    ansible_python_interpreter: /usr/bin/python2
+    ansible_python_interpreter: /usr/bin/python3
   roles:
-  # - install_geonode
   - docker_geonode
