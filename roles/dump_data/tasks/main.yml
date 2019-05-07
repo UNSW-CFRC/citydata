@@ -3,6 +3,7 @@
   file:
     path: '{{ backup_dir }}'
     mode: 0777
+  become: True
 
 - name: Trust connection from localhost
   replace:
