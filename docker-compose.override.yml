@@ -19,11 +19,13 @@ services:
       NGINX_BASE_URL: http://{{ site_hostname }}:80
 
 volumes:
-  geoserver-data-dir:
-    name: '{{ gsdata }}'
-  dbdata:
-    name: '{{ postgres_data_directory }}'
-  dbbackups:
-    name: '{{ backup_dir }}'
-  statics:
-    name: '{{ ansible_env.HOME }}/{{ project_dir }}/{{ project_dir }}/{{ org }}/{{ project_name }}/static'
+  - '{{ gsdata }}': geoserver-data-dir
+      name: gsdata
+  - '{{ postgres_data_directory }}': dbdata
+      name: dbdata
+  - '{{ backup_dir }}': dbbackups
+      name: dbbackups
+  - '{{ ansible_env.HOME }}/{{ project_dir }}/{{ project_dir }}/{{ org }}/{{ project_name }}/static': /statics
+    name: statics
+  - '{{ ansible_env.HOME }}/{{ project_dir }}/{{ project_dir }}/': /uploaded
+    name: uploaded
