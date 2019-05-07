@@ -60,3 +60,17 @@
     name: '{{ ansible_user_id }}'
     groups: docker
   become: true
+
+# Commented because last step failed with: fatal error: ffi.h: No such file or directory
+# - name: Install pip
+#   apt:
+#     name: python3-pip
+#     update_cache: True
+#   become: True
+#
+# - name: Install python docker for Ansible
+#   pip:
+#     name:
+#       - docker-py
+#       - docker-compose # This failed with fatal error: ffi.h: No such file or directory
+#   become: True

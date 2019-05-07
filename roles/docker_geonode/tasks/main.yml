@@ -1,58 +1,41 @@
 ---
-- name: Git Geonode
-  git:
-    repo: https://github.com/GeoNode/geonode
-    dest: '{{ ansible_env.HOME }}/geonode'
-  # ignore_errors: True
-  # no_log: True
+- name: Copy docker files
+  copy:
+    src: '{{ item }}'
+    dest: '~/{{ project_dir }}/'
+  with_items:
+    - requirements.txt
 
-# - name: rename subdir to project_dir
-#   command: mv geonode-project {{ project_dir }}
-#   args:
-#     chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
-#     creates: '{{ ansible_env.HOME }}/{{ project_dir }}/{{ project_dir }}'
-#
-# - name: Template geonode-project files from Ansible Control to server
-#   template:
-#     src: '{{ item }}'
-#     dest: '~/{{ project_dir }}/{{ project_dir }}/'
-#   with_fileglob:
-#     - '{{ playbook_dir }}/geonode-project/*.py'
-#     - '{{ playbook_dir }}/geonode-project/*.py.sample'
-#
-# - name: Template home dir files from Ansible Control to server
-#   template:
-#     src: '{{ item }}'
-#     dest: '~/{{ project_dir }}/'
-#   with_fileglob:
-#     - '{{ playbook_dir }}/.env'
-#     - '{{ playbook_dir }}/docker*.yml'
-#     - '{{ playbook_dir }}/Dockerfile'
-#     - '{{ playbook_dir }}/*.py'
-#     # - '{{ playbook_dir }}/playbook.yml'
-#     - '{{ playbook_dir }}/uwsgi.ini'
+- name: Template host override for private IP
+  template:
+    src: '{{ item }}.j2'
+    dest: ~/{{ project_dir }}/{{ item }}
+  with_items:
+    - docker-compose.yml
+    - docker-compose.override.yml
+    - Dockerfile
 
-- name: Duplicate localhost override for private IP
-  command: cp docker-compose.override.localhost.yml docker-compose.override.{{ http_hostname }}.yml
-  args:
-    chdir: '{{ ansible_env.HOME }}/geonode'
-    creates: '{{ ansible_env.HOME }}/geonode/docker-compose.override.{{ http_hostname }}.yml'
-
-- name: Set private IP address as host
-  replace:
-    path: '{{ ansible_env.HOME }}/geonode/docker-compose.override.{{ http_hostname }}.yml'
-    regexp: localhost
-    replace: '{{ http_hostname }}'
-
-- name: Refresh private_ip var
-  include_vars: group_vars/{{ envt }}
+# - name: Refresh private_ip var
+#   include_vars: group_vars/{{ envt }}
 
 - name: Launch the stack
-  command: docker-compose -f docker-compose.yml -f docker-compose.override.{{ http_hostname }}.yml up --build
+  command: docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build
   args:
-    chdir: '{{ ansible_env.HOME }}/geonode'
+    chdir: '~/{{ project_dir }}'
   ignore_errors: True
-  no_log: True
+  # no_log: True
+
+# Commented because it requires modules installed (in roles/prep_server)
+# which failed with fatal error: ffi.h: No such file or directory
+# - name: Launch the stack
+#   docker_service:
+#     project_src: ~/{{ project_dir }}
+#     files:
+#       - docker-compose.override.yml
+#     build: yes
+#   become: True
+#   environment:
+#     PYTHONPATH: "{{ lookup('env','PYTHONPATH') }}:/usr/lib/python2.7/dist-packages"
 
 # - name: Prepare the stack (without running) 2/2
 #   command: docker-compose -f docker-compose.yml up --no-start
