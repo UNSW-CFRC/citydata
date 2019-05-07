@@ -18,7 +18,7 @@ envt_ingress_rules: |
                 "GroupId": {
                     "Ref": "SG{{ project_id }}"
                 },
-                "Description": "Dev: Tomcat HTTP",
+                "Description": "Push data from source",
                 "IpProtocol": "tcp",
                 "FromPort": "8000",
                 "ToPort": "8000",
