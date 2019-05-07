@@ -52,7 +52,7 @@
   args:
     chdir: '{{ ansible_env.HOME }}/geonode'
   ignore_errors: True
-  # no_log: True
+  no_log: True
 
 # - name: Prepare the stack (without running) 2/2
 #   command: docker-compose -f docker-compose.yml up --no-start
