@@ -53,6 +53,9 @@
 - name: Refresh inventory
   meta: refresh_inventory
 
+- name: Refresh private_ip var
+  include_vars: group_vars/{{ envt }}
+
 - name: Write private IP group variable
   replace:
     path: '{{ playbook_dir }}/group_vars/{{ envt }}'
