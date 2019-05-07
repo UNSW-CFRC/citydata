@@ -20,35 +20,9 @@ envt_ingress_rules: |
                 },
                 "Description": "Push data from source",
                 "IpProtocol": "tcp",
-                "FromPort": "8000",
-                "ToPort": "8000",
-                "CidrIp": "0.0.0.0/0"
-            }
-        },
-        "ingress8": {
-            "Type": "AWS::EC2::SecurityGroupIngress",
-            "Properties": {
-                "GroupId": {
-                    "Ref": "SG{{ project_id }}"
-                },
-                "Description": "Dev: Tomcat HTTP",
-                "IpProtocol": "tcp",
-                "FromPort": "8080",
-                "ToPort": "8080",
-                "CidrIp": "0.0.0.0/0"
-            }
-        },
-        "ingress9": {
-            "Type": "AWS::EC2::SecurityGroupIngress",
-            "Properties": {
-                "GroupId": {
-                    "Ref": "SG{{ project_id }}"
-                },
-                "Description": "Dev: Postgresql",
-                "IpProtocol": "tcp",
-                "FromPort": "5432",
-                "ToPort": "5432",
-                "CidrIp": "0.0.0.0/0"
+                "FromPort": "22",
+                "ToPort": "22",
+                "CidrIp": "{{ data_src }}/32"
             }
         },
 
