@@ -1,25 +1,43 @@
 ---
-- name: Copy docker files
+- name: Copy docker and build files
   copy:
     src: '{{ item }}'
     dest: '~/{{ project_dir }}/'
   with_items:
+    - Dockerfile
     - requirements.txt
+    - setup.py
+    - README.rst
 
-- name: Template host override for private IP
+- name: Copy env files
+  copy:
+    src: '{{ playbook_dir }}/scripts/docker/'
+    dest: ~/{{ project_dir }}/scripts/docker/
+
+- name: Copy Geonode
+  copy:
+    src: '{{ playbook_dir }}/geonode/'
+    dest: ~/{{ project_dir }}/geonode/
+
+- name: Template docker-compose files
   template:
     src: '{{ item }}.j2'
     dest: ~/{{ project_dir }}/{{ item }}
   with_items:
     - docker-compose.yml
-    - docker-compose.override.yml
-    - Dockerfile
+    - docker-compose.override-hostname.yml
+    - docker-compose.override-volumes.yml
 
 # - name: Refresh private_ip var
 #   include_vars: group_vars/{{ envt }}
 
+- name: create static folder
+  file:
+    name: ~/{{ project_dir }}/static
+    state: directory
+
 - name: Launch the stack
-  command: docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build
+  command: docker-compose -f docker-compose.yml -f docker-compose.override-hostname.yml -f docker-compose.override-volumes.yml up --build
   args:
     chdir: '~/{{ project_dir }}'
   ignore_errors: True

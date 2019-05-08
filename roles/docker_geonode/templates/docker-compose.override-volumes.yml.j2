@@ -1,0 +1,30 @@
+version: '2.2'
+volumes:
+  geoserver-data-dir:
+    name: '{{ project_name }}-gsdata-dir'
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '{{ gsdata }}'
+  dbdata:
+    name: '{{ project_name }}-dbdata'
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '{{ postgres_data_directory }}'
+  dbbackups:
+    name: '{{ project_name }}-dbbackups'
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '{{ backup_dir }}'
+  statics:
+    name: '{{ project_name }}-statics'
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '{{ ansible_env.HOME }}/{{ project_dir }}/static'
