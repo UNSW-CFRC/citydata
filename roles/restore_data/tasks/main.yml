@@ -8,12 +8,12 @@
 # # Assumes push.yml has been run to copy the backup database to the target server
 
 - name: Restore django uploaded files
-  command: docker cp {{ project_dir }}/uploaded django4geonode:/uploaded
+  command: docker cp {{ project_dir }}/uploaded django4{{ project_name }}:/uploaded
   args:
     chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
 
 - name: Restore the workspaces and styles of the geoserver data directory
-  command: docker cp {{ gsdata }}/{{ item }} geoserver4geonode:/geoserver_data/data/{{ item }}
+  command: docker cp {{ gsdata }}/{{ item }} geoserver4{{ project_name }}:/geoserver_data/data/{{ item }}
   with_items:
     - styles
     - workspaces
@@ -22,35 +22,35 @@
     # - data
 
 - name: Create the postgres database if previously dropped
-  command: docker exec -i db4geonode createdb -U postgres postgres
+  command: docker exec -i db4{{ project_name }} createdb -U postgres postgres
   ignore_errors: True
 
 - name: Restore database
-  shell:  cat {{ backup_dir }}/pg_dumpall.custom | docker exec -i db4geonode psql -U postgres
+  shell:  cat {{ backup_dir }}/pg_dumpall.custom | docker exec -i db4{{ project_name }} psql -U postgres
   ignore_errors: True
   no_log: True
 
 - name: Drop the postgres database
-  command: docker exec -i db4geonode dropdb -U postgres postgres
+  command: docker exec -i db4{{ project_name }} dropdb -U postgres postgres
   ignore_errors: True
 
 # Next two tasks from https://stackoverflow.com/questions/5108876/kill-a-postgresql-session-connection/5109190#5109190
 - name: Prevent further connections to geonode
-  command: docker exec -i db4geonode psql -d template1 -U postgres -c "REVOKE CONNECT ON DATABASE geonode FROM PUBLIC, postgres;"
+  command: docker exec -i db4{{ project_name }} psql -d template1 -U postgres -c "REVOKE CONNECT ON DATABASE geonode FROM PUBLIC, postgres;"
 #
 - name: Terminate current connections to geonode
-  command: docker exec -i db4geonode psql -d template1 -U postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid() AND datname = 'geonode';"
+  command: docker exec -i db4{{ project_name }} psql -d template1 -U postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid() AND datname = 'geonode';"
 
 # Commented: giving error "There are 9 other sessions using the database."
 - name: Rename geonode database to postgres
-  command: docker exec -i db4geonode psql -d template1 -U postgres -c "ALTER DATABASE geonode RENAME TO postgres;"
+  command: docker exec -i db4{{ project_name }} psql -d template1 -U postgres -c "ALTER DATABASE geonode RENAME TO postgres;"
 
 - name: Allow further connections to postgres
-  command: docker exec -i db4geonode psql -d template1 -U postgres -c "GRANT CONNECT ON DATABASE postgres TO PUBLIC, postgres;"
+  command: docker exec -i db4{{ project_name }} psql -d template1 -U postgres -c "GRANT CONNECT ON DATABASE postgres TO PUBLIC, postgres;"
 
 #  Skip this because layers_layer doesn't have a "service_id" column, only "remote_service_id"
 # - name: Fix inconsistency that prevents migrations
-#   command: docker exec -i db4geonode psql -U postgres -c "ALTER TABLE public.layers_layer DROP COLUMN service_id;"
+#   command: docker exec -i db4{{ project_name }} psql -U postgres -c "ALTER TABLE public.layers_layer DROP COLUMN service_id;"
 #   ignore_errors: True
   # no_log: True
 
