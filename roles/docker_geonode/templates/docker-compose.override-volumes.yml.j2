@@ -1,4 +1,10 @@
 version: '2.2'
+services:
+  geonode:
+    volumes:
+      - statics:/mnt/volumes/statics
+      - nginx-logs:/var/log/nginx
+
 volumes:
   geoserver-data-dir:
     name: '{{ project_name }}-gsdata-dir'
