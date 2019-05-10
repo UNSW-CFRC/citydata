@@ -11,15 +11,19 @@
     regexp: ^\s*COMPOSE_PROJECT_NAME\s*=.*$
     replace: COMPOSE_PROJECT_NAME={{ project_name }}
 
+- name: Create project directory
+  file:
+    path: ~/{{ project_dir }}
+    state: directory
 
-- name: Template docker-compose files
+- name: Template docker-compose override files
   template:
     src: '{{ item }}.j2'
     dest: ~/{{ project_dir }}/{{ item }}
   with_items:
-    - docker-compose.yml
     - docker-compose.override-hostname.yml
     - docker-compose.override-volumes.yml
+    - docker-compose.override-debug.yml
 
 - name: Create folders for docker volumes
   file:
@@ -43,10 +47,16 @@
   become: True
 
 - name: Launch the stack
-  command: docker-compose -f docker-compose.yml -f docker-compose.override-hostname.yml -f docker-compose.override-volumes.yml up --build
+  command: >
+    docker-compose
+      -f docker-compose.yml
+      -f ~/{{ project_dir }}/docker-compose.override-hostname.yml
+      -f ~/{{ project_dir }}/docker-compose.override-volumes.yml
+      -f ~/{{ project_dir }}/docker-compose.override-debug.yml
+      up --build
   args:
-    chdir: '~/{{ project_dir }}'
-  ignore_errors: True
+    chdir: ~/geonode
+  # ignore_errors: True
   # no_log: True
 
 # Commented because it requires modules installed (in roles/prep_server)
