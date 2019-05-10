@@ -23,7 +23,7 @@
 # Dump the database content (you will be prompted several time for the password above)
 
 - name: Dump the database from host
-  command: 'pg_dumpall --host=127.0.0.1 --file=pg_dumpall.custom'
+  command: 'pg_dumpall --host=127.0.0.1 --file=pg_dumpall_{{ data_src }}.sql'
   args:
     chdir: '{{ backup_dir }}'
   become_user: postgres
@@ -31,7 +31,7 @@
   when: use_docker is not defined
 
 - name: Dump the database from docker
-  shell: docker exec db4geonode pg_dumpall -U postgres  --host=127.0.0.1 > pg_dumpall_docker.custom
+  shell: docker exec db4{{ project_name }} pg_dumpall -U postgres  --host=127.0.0.1 > pg_dumpall_{{ data_src }}.sql
   args:
     chdir: '{{ backup_dir }}'
   become: True
