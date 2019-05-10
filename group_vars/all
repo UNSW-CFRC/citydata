@@ -37,7 +37,7 @@ big_disk_device: xvdb
 big_disk_size: 100
 big_fstype: ext4
 # big_dir:  '{{ mount_point}}/sys'
-big_dir:  '{{ mount_point}}/data'
+big_dir:  '{{ mount_point }}/data'
 
 tmp_dir: '{{ big_dir }}/tmp'
 
