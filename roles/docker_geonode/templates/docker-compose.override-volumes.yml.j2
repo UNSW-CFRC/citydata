@@ -27,4 +27,11 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '{{ ansible_env.HOME }}/{{ project_dir }}/static'
+      device: '{{ statics_dir }}'
+  nginx-logs:
+    name: '{{ project_name }}-nginx-logs'
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '{{ log_dir }}/nginx'

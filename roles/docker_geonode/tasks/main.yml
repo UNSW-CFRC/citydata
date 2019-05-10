@@ -28,13 +28,26 @@
     - docker-compose.override-hostname.yml
     - docker-compose.override-volumes.yml
 
+- name: Create folders for docker volumes
+  file:
+    name: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ statics_dir }}'
+    - '{{ log_dir }}/nginx'
+  become: True
+
 # - name: Refresh private_ip var
 #   include_vars: group_vars/{{ envt }}
 
-- name: create static folder
+- name: Link geoserver log to logs directory
   file:
-    name: ~/{{ project_dir }}/static
-    state: directory
+    src: '{{ gsdata }}/logs/'
+    dest: '{{ log_dir }}/geoserver'
+    state: link
+    force: True
+    follow: False
+  become: True
 
 - name: Launch the stack
   command: docker-compose -f docker-compose.yml -f docker-compose.override-hostname.yml -f docker-compose.override-volumes.yml up --build

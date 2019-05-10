@@ -40,6 +40,8 @@ big_fstype: ext4
 big_dir:  '{{ mount_point }}/data'
 
 tmp_dir: '{{ big_dir }}/tmp'
+log_dir: '{{ big_dir }}/logs'
+statics_dir: '{{ big_dir }}/statics'
 
 backup_disk_device: xvdf
 backup_disk_size: 200
