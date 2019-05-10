@@ -1,23 +1,16 @@
 ---
-- name: Copy docker and build files
-  copy:
-    src: '{{ item }}'
-    dest: '~/{{ project_dir }}/'
-  with_items:
-    - Dockerfile
-    - requirements.txt
-    - setup.py
-    - README.rst
+- name: Git Geonode
+  git:
+    repo: https://github.com/GeoNode/geonode
+    dest: ~/geonode
+    force: True
 
-- name: Copy env files
-  copy:
-    src: '{{ playbook_dir }}/scripts/docker/'
-    dest: ~/{{ project_dir }}/scripts/docker/
+- name: Set project name for docker
+  replace:
+    path: ~/geonode/.env
+    regexp: ^\s*COMPOSE_PROJECT_NAME\s*=.*$
+    replace: COMPOSE_PROJECT_NAME={{ project_name }}
 
-- name: Copy Geonode
-  copy:
-    src: '{{ playbook_dir }}/geonode/'
-    dest: ~/{{ project_dir }}/geonode/
 
 - name: Template docker-compose files
   template:
