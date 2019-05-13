@@ -1,11 +1,5 @@
 ---
-# - name: Restart postgres
-#   service:
-#     name: postgresql
-#     state: restarted
-#   become: true
-#
-# # Assumes push.yml has been run to copy the backup database to the target server
+# Assumes push.yml has been run to copy the backup database to the target server
 
 - name: Restore django uploaded files
   command: docker cp {{ project_dir }}/uploaded django4{{ project_name }}:/uploaded
