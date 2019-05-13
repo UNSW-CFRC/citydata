@@ -1,7 +1,7 @@
 ---
 - name: Copy data from source host
-  hosts: targets
+  hosts: data_src
   vars:
     ansible_python_interpreter: /usr/bin/python3
   roles:
-  - push_data
+  - pull_data

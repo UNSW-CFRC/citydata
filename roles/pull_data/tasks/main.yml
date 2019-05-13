@@ -1,0 +1,54 @@
+---
+- name: Generate SSH key
+  shell: ssh-keygen -f ~/.ssh/id_rsa -N ''
+  args:
+    creates: ~/.ssh/id_rsa.pub
+
+- name: Read public key
+  shell: cat ~/.ssh/id_rsa.pub
+  register: key
+
+- name: Authorise the key
+  authorized_key:
+    key: '{{ key.stdout_lines[0] }}'
+    user: '{{ ansible_user_id }}'
+  delegate_to: '{{ dest }}'
+
+- name: Pull database backup from source server
+  synchronize:
+    mode: pull
+    src: '{{ backup_dir }}/pg_dumpall_{{ inventory_hostname }}.sql'
+    dest: '{{ backup_dir }}/pg_dumpall_{{ inventory_hostname }}.sql'
+  delegate_to: '{{ dest }}'
+  become: True
+
+- name: Create uploaded dir on target
+  file:
+    path: '{{ statics_dir }}/uploaded'
+    state: directory
+  become: True
+  delegate_to: '{{ dest }}'
+
+- name: Set directory vars
+  include_tasks: set_datasrc_dirs.yml
+
+- name: Pull uploaded files from source server
+  synchronize:
+    mode: pull
+    src: '{{ data_src_uploaded_dir }}'
+    dest: '{{ statics_dir }}/uploaded'
+  delegate_to: '{{ dest }}'
+  become: True
+
+# - name: Stop all docker containers on source
+#   shell: docker stop $(docker ps -a -q)
+#   ignore_errors: true
+#   when: use_docker is defined and use_docker == True
+
+- name: Pull geoserver data from source server
+  synchronize:
+    mode: pull
+    src: '{{ data_src_gsdata_dir }}/'
+    dest: '{{ gsdata }}/'
+  delegate_to: '{{ dest }}'
+  become: True
