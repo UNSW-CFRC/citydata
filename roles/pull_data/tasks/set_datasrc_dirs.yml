@@ -1,0 +1,12 @@
+---
+- name: Set directory vars for non-docker data src
+  set_fact:
+    data_src_uploaded_dir: '{{ big_dir }}/geonode/geonode/geonode/uploaded/'
+    data_src_gsdata_dir: '{{ big_dir }}/geoserver_data/'
+  when: use_docker is not defined
+
+- name: Set directory vars for docker data src
+  set_fact:
+    data_src_uploaded_dir: '{{ statics_dir }}/uploaded/'
+    data_src_gsdata_dir: '{{ gsdata }}/'
+  when: use_docker is defined
