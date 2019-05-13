@@ -1,0 +1,34 @@
+---
+# Leave these blank for first time stack creation.
+# Then store IP addresses above and uncomment
+# assign_p**_ip vars in roles/create_stack/vars/main.yml
+#
+private_ip: # Private IP address of server
+assign_private_ip:
+
+public_ip: # 52.53.225.136 # Public IP address of server
+assign_public_ip: # '"PublicIpAddress": "{{ public_ip }}",' # '"PublicIpAddress": "{{ public_ip }}",'
+
+ansible_ssh_private_key_file: ~/.ssh/CityData_nonProd.pem
+
+debug: False
+
+envt_ingress_rules: |
+        "ingress7": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "SG{{ project_id }}"
+                },
+                "Description": "Push data from source",
+                "IpProtocol": "tcp",
+                "FromPort": "22",
+                "ToPort": "22",
+                "CidrIp": "{{ data_src }}/32"
+            }
+        },
+
+aws_access_key: '{{ aws_access_key_dev }}'
+aws_secret_key: '{{ aws_secret_key_dev }}'
+django_secret_key: '{{ django_secret_key_dev }}'
+admin_pass: '{{ admin_pass_dev }}'
