@@ -3,16 +3,17 @@
   shell: ssh-keygen -f ~/.ssh/id_rsa -N ''
   args:
     creates: ~/.ssh/id_rsa.pub
+  delegate_to: '{{ dest }}'
 
 - name: Read public key
   shell: cat ~/.ssh/id_rsa.pub
   register: key
+  delegate_to: '{{ dest }}'
 
 - name: Authorise the key
   authorized_key:
     key: '{{ key.stdout_lines[0] }}'
     user: '{{ ansible_user_id }}'
-  delegate_to: '{{ dest }}'
 
 - name: Pull database backup from source server
   synchronize:
@@ -22,21 +23,50 @@
   delegate_to: '{{ dest }}'
   become: True
 
-- name: Create uploaded dir on target
-  file:
-    path: '{{ statics_dir }}/uploaded'
-    state: directory
-  become: True
-  delegate_to: '{{ dest }}'
-
 - name: Set directory vars
   include_tasks: set_datasrc_dirs.yml
+
+- name: Compress uploaded directory
+  archive:
+    path: '{{ data_src_uploaded_dir }}'
+    dest: '{{ backup_dir }}/uploaded.tgz'
+  become: True
 
 - name: Pull uploaded files from source server
   synchronize:
     mode: pull
-    src: '{{ data_src_uploaded_dir }}'
-    dest: '{{ statics_dir }}/uploaded'
+    src: '{{ backup_dir }}/uploaded.tgz'
+    dest: '{{ backup_dir }}/uploaded.tgz'
+  delegate_to: '{{ dest }}'
+  become: True
+
+- name: Uncompress uploaded directory
+  unarchive:
+    src: '{{ backup_dir }}/uploaded.tgz'
+    dest: '{{ statics_dir }}/'
+    remote_src: True
+  delegate_to: '{{ dest }}'
+  become: True
+
+- name: Compress geoserver-data directory
+  archive:
+    path: '{{ data_src_gsdata_dir }}'
+    dest: '{{ backup_dir }}/gsdata.tgz'
+  become: True
+
+- name: Pull geoserver-data files from source server
+  synchronize:
+    mode: pull
+    src: '{{ backup_dir }}/gsdata.tgz'
+    dest: '{{ backup_dir }}/gsdata.tgz'
+  delegate_to: '{{ dest }}'
+  become: True
+
+- name: Uncompress geoserver-data directory
+  unarchive:
+    src: '{{ backup_dir }}/gsdata.tgz'
+    dest: '{{ gsdata | dirname }}'
+    remote_src: True
   delegate_to: '{{ dest }}'
   become: True
 
@@ -45,10 +75,10 @@
 #   ignore_errors: true
 #   when: use_docker is defined and use_docker == True
 
-- name: Pull geoserver data from source server
-  synchronize:
-    mode: pull
-    src: '{{ data_src_gsdata_dir }}/'
-    dest: '{{ gsdata }}/'
-  delegate_to: '{{ dest }}'
-  become: True
+# - name: Pull geoserver data from source server
+#   synchronize:
+#     mode: pull
+#     src: '{{ data_src_gsdata_dir }}/'
+#     dest: '{{ gsdata }}/'
+#   delegate_to: '{{ dest }}'
+#   become: True
