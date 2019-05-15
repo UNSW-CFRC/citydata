@@ -15,6 +15,14 @@
     key: '{{ key.stdout_lines[0] }}'
     user: '{{ ansible_user_id }}'
 
+- name: Allow others to write to backup directory
+  file:
+    path: '{{ backup_dir }}'
+    state: directory
+    mode: 0777
+  become: True
+  delegate_to: '{{ dest }}'
+
 - name: Pull database backup from source server
   synchronize:
     mode: pull
