@@ -33,12 +33,12 @@
 
 - name: Template docker-compose override files
   template:
-    src: '{{ item }}.j2'
-    dest: ~/{{ project_dir }}/{{ item }}
+    src: 'docker-compose.override-{{ item }}.yml.j2'
+    dest: ~/{{ project_dir }}/docker-compose.override-{{ item }}.yml
   with_items:
-    - docker-compose.override-hostname.yml
-    - docker-compose.override-volumes.yml
-    - docker-compose.override-debug.yml
+    - hostname
+    - volumes
+    - debug
 
 - name: Create folders for docker volumes
   file:
