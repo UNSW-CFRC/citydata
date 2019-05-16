@@ -74,10 +74,3 @@
     regexp: '^\s*public_ip\s*:\s*[^#]*'
     replace: 'public_ip: {{ stack_result.stack_outputs.PubIp }} '
   when: use_public_ip
-
-- name: Write group variable to assign public IP in stack
-  replace:
-    path: '{{ playbook_dir }}/group_vars/{{ envt }}'
-    regexp: '^\s*assign_public_ip\s*:\s*[^#]*'
-    replace: 'assign_public_ip: ''"PublicIpAddress": "{{ ''{{ public_ip }}'' }}",'' '
-  when: use_public_ip
