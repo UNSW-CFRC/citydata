@@ -34,9 +34,14 @@
     state: absent
   when: stack_result is failed
 
-- name: Print IP address(es)
+- name: Print Private IP address
   debug:
-    msg: '{{ stack_result.stack_outputs }}'
+    msg: '{{ stack_result.stack_outputs.PrvIp }}'
+
+- name: Print elastic IP for convenience
+  debug:
+    msg: '{{ elastic_ip }}'
+  when: elastic_ip is defined
 
 - name: Write private IP address to inventory
   replace:
@@ -67,10 +72,3 @@
     path: '{{ playbook_dir }}/group_vars/{{ envt }}'
     regexp: '^\s*assign_private_ip\s*:\s*[^#]*'
     replace: 'assign_private_ip: ''"PrivateIpAddress": "{{ ''{{ private_ip }}'' }}",'' '
-
-- name: Write public IP group variable
-  replace:
-    path: '{{ playbook_dir }}/group_vars/{{ envt }}'
-    regexp: '^\s*public_ip\s*:\s*[^#]*'
-    replace: 'public_ip: {{ stack_result.stack_outputs.PubIp }} '
-  when: use_public_ip

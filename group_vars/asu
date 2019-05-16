@@ -10,10 +10,16 @@ timezone: '{{ country }}/{{ city }}'
 
 aws_keypair: KERData
 
-public_ip: 54.183.179.233 # Public IP address of server
-http_hostname: '{{ public_ip }}'
+http_hostname: '{{ elastic_ip }}'
 
-use_public_ip: true
+associate_elastic_ip: |
+        "IPAssoc": {
+            "Type": "AWS::EC2::EIPAssociation",
+            "Properties": {
+                "EIP": "{{ elastic_ip }}",
+                "InstanceId": { "Ref": "{{ project_id }}"}
+              }
+        },
 
 admin_email: citydata@unsw.edu.au
 

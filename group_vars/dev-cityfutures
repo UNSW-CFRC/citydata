@@ -6,6 +6,5 @@
 private_ip: 10.116.2.13 # Private IP address of server
 assign_private_ip: '"PrivateIpAddress": "{{ private_ip }}",'
 
-public_ip: # Public IP address of server
 public_protocol: http
 http_hostname: '{{ private_ip }}'

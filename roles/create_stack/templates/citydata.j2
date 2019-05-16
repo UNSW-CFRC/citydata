@@ -5,8 +5,7 @@
         "PrvIp" : {
           "Value" : { "Fn::GetAtt" : [ "{{ project_id }}", "PrivateIp" ]},
           "Description" : "{{ project_id }} server's Private IP Address"
-        },
-        {{ output_public_ip }}
+        }
     },
     "Resources": {
         "{{ project_id }}": {
@@ -75,6 +74,7 @@
                 }
             }
         },
+        {{ associate_elastic_ip }}
         "volData": {
             "Type": "AWS::EC2::Volume",
             "Properties": {

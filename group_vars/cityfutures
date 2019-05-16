@@ -10,7 +10,7 @@ timezone: '{{ country }}/{{ city }}'
 
 subdomain: be.unsw.edu.au
 
-use_public_ip: false
+associate_elastic_ip: # Leave blank unless elastic_ip is defined
 
 admin_email: citydata@unsw.edu.au
 
