@@ -3,3 +3,4 @@ services:
   django:
     environment:
       DEBUG: '{{ debug }}'
+      DJANGO_SETTINGS_MODULE: '{{ project_dir }}.settings'

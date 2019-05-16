@@ -74,9 +74,9 @@
   command: >
     docker-compose
       -f docker-compose.yml
-      -f ~/{{ project_dir }}/docker-compose.override-hostname.yml
-      -f ~/{{ project_dir }}/docker-compose.override-volumes.yml
-      -f ~/{{ project_dir }}/docker-compose.override-debug.yml
+      -f ~/{{ project_dir }}/docker-compose.override.hostname.yml
+      -f ~/{{ project_dir }}/docker-compose.override.volumes.yml
+      -f ~/{{ project_dir }}/docker-compose.override.django-env.yml
       up --build
   args:
     chdir: ~/geonode
