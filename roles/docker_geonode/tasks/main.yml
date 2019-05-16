@@ -33,12 +33,12 @@
 
 - name: Template docker-compose override files
   template:
-    src: 'docker-compose.override-{{ item }}.yml.j2'
-    dest: ~/{{ project_dir }}/docker-compose.override-{{ item }}.yml
+    src: 'docker-compose.override.{{ item }}.yml.j2'
+    dest: ~/{{ project_dir }}/docker-compose.override.{{ item }}.yml
   with_items:
     - hostname
     - volumes
-    - debug
+    - django-env
 
 - name: Template citydata django files
   template:
