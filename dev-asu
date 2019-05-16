@@ -1,20 +1,22 @@
 [targets]
-172.31.24.13 envt=dev org=asu
+1.2.3.4 envt=dev org=asu
 
 [asu]
-172.31.24.13
+1.2.3.4
 localhost
 
 [small_sysdisk]
-172.31.24.13
+1.2.3.4
 
 [dev]
-172.31.24.13
+1.2.3.4
 localhost
 
 [dev-asu]
 localhost
 1.2.3.4
+
+[data_src]
 
 [local]
 localhost envt=dev org=asu ansible_connection=local ansible_python_interpreter=/usr/bin/python
