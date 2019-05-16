@@ -1,4 +1,14 @@
 ---
+- name: Set public port for http
+  set_fact:
+    public_port: 80
+  when: public_protocol == 'http'
+
+- name: Set public port for https
+  set_fact:
+    public_port: 443
+  when: public_protocol == 'https'
+
 - name: Git Geonode
   git:
     repo: https://github.com/GeoNode/geonode
