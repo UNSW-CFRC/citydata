@@ -21,9 +21,24 @@
     regexp: ^\s*COMPOSE_PROJECT_NAME\s*=.*$
     replace: COMPOSE_PROJECT_NAME={{ project_name }}
 
-- name: Create project directory
+- name: Create folders for docker volumes
   file:
-    path: ~/{{ project_dir }}
+    name: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ statics_dir }}'
+    - '{{ log_dir }}/nginx'
+  become: True
+
+- name: Create custom statics folder
+  file:
+    path: '{{ statics_dir }}/static/{{ org }}-{{ project_dir }}'
+    state: directory
+  become: True
+
+- name: Create project and django module directories
+  file:
+    path: ~/{{ project_dir }}/{{ project_dir }}
     state: directory
 
 - name: Copy tasks - patch for Geonode PR 4403
@@ -58,28 +73,22 @@
     src: '{{ playbook_dir }}/geonode-project/local_settings.py.sample'
     dest: ~/{{ project_dir }}/{{ project_dir }}/local_settings.py
 
-- name: Copy custom static and template files
+- name: Copy custom templates
   copy:
-    src: '{{ playbook_dir }}/geonode-project/{{ org }}/{{ project_dir }}/{{ item }}/'
-    dest: ~/{{ project_dir }}/{{ project_dir }}/{{ item }}
-  with_items:
-    - static
-    - templates
+    src: '{{ playbook_dir }}/geonode-project/{{ org }}/{{ project_dir }}/templates'
+    dest: ~/{{ project_dir }}/{{ project_dir }}/
 
+- name: Copy custom static files
+  copy:
+    src: '{{ playbook_dir }}/geonode-project/{{ org }}/{{ project_dir }}/static/'
+    dest: '{{ statics_dir }}/static/{{ org }}-{{ project_dir }}/'
+  become: True
+  
 - name: Set page title
   replace:
     path: ~/{{ project_dir }}/{{ project_dir }}/templates/site_base.html
     regexp: INSERT_PROJECT_HERE
     replace: '{{ project }}'
-
-- name: Create folders for docker volumes
-  file:
-    name: '{{ item }}'
-    state: directory
-  with_items:
-    - '{{ statics_dir }}'
-    - '{{ log_dir }}/nginx'
-  become: True
 
 # - name: Refresh private_ip var
 #   include_vars: group_vars/{{ envt }}
