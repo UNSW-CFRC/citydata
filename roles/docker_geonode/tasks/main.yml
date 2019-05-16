@@ -40,6 +40,38 @@
     - volumes
     - debug
 
+- name: Template citydata django files
+  template:
+    src: '{{ playbook_dir }}/geonode-project/{{ item }}/'
+    dest: ~/{{ project_dir }}/{{ project_dir }}/{{ item }}
+  with_items:
+    - __init__.py
+    - apps.py
+    - celeryapp.py
+    - settings.py
+    - urls.py
+    - version.py
+    - wsgi.py
+
+- name: Template local settings
+  template:
+    src: '{{ playbook_dir }}/geonode-project/local_settings.py.sample'
+    dest: ~/{{ project_dir }}/{{ project_dir }}/local_settings.py
+
+- name: Copy custom static and template files
+  copy:
+    src: '{{ playbook_dir }}/geonode-project/{{ org }}/{{ project_dir }}/{{ item }}/'
+    dest: ~/{{ project_dir }}/{{ project_dir }}/{{ item }}
+  with_items:
+    - static
+    - templates
+
+- name: Set page title
+  replace:
+    path: ~/{{ project_dir }}/{{ project_dir }}/templates/site_base.html
+    regexp: INSERT_PROJECT_HERE
+    replace: '{{ project }}'
+
 - name: Create folders for docker volumes
   file:
     name: '{{ item }}'

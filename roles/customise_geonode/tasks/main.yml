@@ -1,19 +1,5 @@
 ---
-- name: Install custom static and template files
-  copy:
-    src: '{{ playbook_dir }}/geonode-project/{{ org }}/{{ project_dir }}/{{ item }}/'
-    dest: ~/{{ project_dir }}/{{ project_dir }}/{{ item }}
-  with_items:
-    - static
-    - templates
-
-- name: Set page title
-  replace:
-    path: ~/{{ project_dir }}/{{ project_dir }}/templates/site_base.html
-    regexp: INSERT_PROJECT_HERE
-    replace: '{{ project }}'
-
-
+# Commands moved to docker_geonode role
 # Commented these tasks because we should do it with docker commands
 #
 # - name: Copy custom files to be served by Apache
