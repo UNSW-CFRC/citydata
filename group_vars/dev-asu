@@ -1,0 +1,10 @@
+---
+# Leave these blank for first time stack creation.
+# Then store IP addresses above and uncomment
+# assign_p**_ip vars in roles/create_stack/vars/main.yml
+#
+private_ip: # Private IP address of server
+assign_private_ip: # '"PrivateIpAddress": "{{ private_ip }}",'
+
+public_ip: # Public IP address of server
+public_protocol: http

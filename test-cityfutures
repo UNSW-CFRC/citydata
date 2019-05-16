@@ -12,6 +12,10 @@ localhost
 10.116.2.55
 localhost
 
+[test-cityfutures]
+10.116.2.55
+localhost
+
 [data_src]
 10.116.2.55 data_src=10.116.2.31
 

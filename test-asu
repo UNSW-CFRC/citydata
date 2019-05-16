@@ -12,5 +12,9 @@ localhost
 172.31.20.125
 localhost
 
+[test-cityfutures]
+172.31.20.125
+localhost
+
 [local]
 localhost envt=test org=asu ansible_connection=local ansible_python_interpreter=/usr/bin/python

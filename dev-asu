@@ -12,5 +12,9 @@ localhost
 172.31.24.13
 localhost
 
+[dev-asu]
+localhost
+1.2.3.4
+
 [local]
 localhost envt=dev org=asu ansible_connection=local ansible_python_interpreter=/usr/bin/python
