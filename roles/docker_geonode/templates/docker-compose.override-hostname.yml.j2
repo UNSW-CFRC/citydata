@@ -11,11 +11,12 @@ services:
     environment:
       - DEBUG=False
       - GEONODE_LB_HOST_IP={{ http_hostname }}
-      - GEONODE_LB_PORT=80
-      - SITEURL=http://{{ http_hostname }}/
+      - GEONODE_LB_PORT={{ public_port }}
+      - GEONODE_LB_PROTOCOL={{ public_protocol }}
+      - SITEURL={{ public_protocol }}://{{ http_hostname }}/
       - ALLOWED_HOSTS=['{{ http_hostname }}', ]
-      - GEOSERVER_PUBLIC_LOCATION=http://{{ http_hostname }}/gs/
-      - GEOSERVER_WEB_UI_LOCATION=http://{{ http_hostname }}/geoserver/
+      - GEOSERVER_PUBLIC_LOCATION={{ public_protocol }}://{{ http_hostname }}/gs/
+      - GEOSERVER_WEB_UI_LOCATION={{ public_protocol }}://{{ http_hostname }}/geoserver/
 
   celery:
     build: .
@@ -24,14 +25,16 @@ services:
     environment:
       - DEBUG=False
       - GEONODE_LB_HOST_IP={{ http_hostname }}
-      - GEONODE_LB_PORT=80
-      - SITEURL=http://{{ http_hostname }}/
+      - GEONODE_LB_PORT={{ public_port }}
+      - GEONODE_LB_PROTOCOL={{ public_protocol }}
+      - SITEURL={{ public_protocol }}://{{ http_hostname }}/
       - ALLOWED_HOSTS=['{{ http_hostname }}', ]
-      - GEOSERVER_PUBLIC_LOCATION=http://{{ http_hostname }}/gs/
-      - GEOSERVER_WEB_UI_LOCATION=http://{{ http_hostname }}/geoserver/
+      - GEOSERVER_PUBLIC_LOCATION={{ public_protocol }}://{{ http_hostname }}/gs/
+      - GEOSERVER_WEB_UI_LOCATION={{ public_protocol }}://{{ http_hostname }}/geoserver/
 
   geoserver:
     environment:
       - GEONODE_LB_HOST_IP={{ http_hostname }}
-      - GEONODE_LB_PORT=80
+      - GEONODE_LB_PORT={{ public_port }}
+      - GEONODE_LB_PROTOCOL={{ public_protocol }}
   #    - NGINX_BASE_URL=

@@ -16,6 +16,11 @@
     path: ~/{{ project_dir }}
     state: directory
 
+- name: Copy tasks
+  copy:
+    src: tasks.py
+    dest: ~/geonode/tasks.py
+
 - name: Template docker-compose override files
   template:
     src: '{{ item }}.j2'
