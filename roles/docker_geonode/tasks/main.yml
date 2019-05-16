@@ -26,7 +26,7 @@
     path: ~/{{ project_dir }}
     state: directory
 
-- name: Copy tasks
+- name: Copy tasks - patch for Geonode PR 4403
   copy:
     src: tasks.py
     dest: ~/geonode/tasks.py
@@ -69,7 +69,6 @@
 #     # delay: 10
 #     timeout: 600
 
-# cd ~/geonode && docker-compose -f docker-compose.yml -f ~/citydata/docker-compose.override-hostname.yml -f ~/citydata/docker-compose.override-volumes.yml -f ~/citydata/docker-compose.override-debug.yml up --build
 - name: Launch the stack
   command: >
     docker-compose
@@ -80,38 +79,3 @@
       up --build
   args:
     chdir: ~/geonode
-  # ignore_errors: True
-  # no_log: True
-
-# Commented because it requires modules installed (in roles/prep_server)
-# which failed with fatal error: ffi.h: No such file or directory
-# - name: Launch the stack
-#   docker_service:
-#     project_src: ~/{{ project_dir }}
-#     files:
-#       - docker-compose.override.yml
-#     build: yes
-#   become: True
-#   environment:
-#     PYTHONPATH: "{{ lookup('env','PYTHONPATH') }}:/usr/lib/python2.7/dist-packages"
-
-# - name: Prepare the stack (without running) 2/2
-#   command: docker-compose -f docker-compose.yml up --no-start
-#   args:
-#     chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
-#   become: true
-#
-# - name: Start the database
-#   command: docker-compose -f docker-compose.yml up -d db
-#   args:
-#     chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
-#   become: true
-#
-# - debug: msg="{{ lookup('env','PATH') }} is an environment variable"
-#
-# - name: Initialise geoserver
-#   command: docker-compose -f docker-compose.yml run --rm geoserver true
-#   args:
-#     chdir: '{{ ansible_env.HOME }}/{{ project_dir }}'
-#     executable: /bin/bash
-#   become: true
