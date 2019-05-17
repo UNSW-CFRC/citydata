@@ -1,8 +1,11 @@
 ---
-- name: Copy custom templates to host
+- name: Copy custom geonode files to host
   copy:
-    src: '{{ playbook_dir }}/geonode-project/{{ org }}/{{ project_dir }}/templates/'
-    dest: ~/geonode/geonode/templates/
+    src: '{{ playbook_dir }}/geonode-project/{{ org }}/{{ project_dir }}/{{ item }}'
+    dest: ~/geonode/geonode/{{ item }}
+  with_items:
+    - templates/
+    - guide/
 
 - name: Copy custom static files
   copy:
@@ -17,11 +20,22 @@
     regexp: INSERT_PROJECT_HERE
     replace: '{{ project }}'
 
+- debug:
+    msg: 'TODO: Add guide links to About in top nav menu'
+
 - name: Point to site index
   replace:
     path: ~/geonode/geonode/urls.py
     regexp: "template_name='index.html'"
     replace: "template_name='site_index.html'"
+
+- name: Add guide to URLs
+  blockinfile:
+    path: ~/geonode/geonode/urls.py
+    insertafter: ^\s*urlpatterns\s*=\s*patterns
+    block: |
+# Guide views
+                     (r'^guide/', include('geonode.guide.urls')),
 
 - name: Copy custom geonode files to container
   command: docker cp {{ item }} django4{{ project_name }}:/usr/src/app/geonode/{{ item }}
@@ -30,6 +44,7 @@
   with_items:
     - urls.py
     - templates/.
+    - guide/.
 
 - name: Restart django
   command: docker exec django4{{ project_name }} touch /usr/src/app/geonode/wsgi.py
