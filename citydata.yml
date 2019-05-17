@@ -8,9 +8,5 @@
 - name: Install geonode
   import_playbook: geonode.yml
 
-# - name: Customise geonode
-#   import_playbook: custom.yml
-#
-# - name: Deploy in production mode
-#   import_playbook: prod.yml
-#   when: not 'dev' in group_names
+- name: Customise geonode
+  import_playbook: custom.yml
