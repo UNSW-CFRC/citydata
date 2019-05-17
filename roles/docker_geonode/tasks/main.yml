@@ -29,16 +29,10 @@
     - '{{ statics_dir }}'
     - '{{ log_dir }}/nginx'
   become: True
-
-- name: Create custom statics folder
+#
+- name: Create project directory
   file:
-    path: '{{ statics_dir }}/static/{{ org }}-{{ project_dir }}'
-    state: directory
-  become: True
-
-- name: Create project and django module directories
-  file:
-    path: ~/{{ project_dir }}/{{ project_dir }}
+    path: ~/{{ project_dir }}
     state: directory
 
 - name: Copy tasks - patch for Geonode PR 4403
@@ -55,44 +49,6 @@
     - volumes
     - django-env
 
-- name: Template citydata django files
-  template:
-    src: '{{ playbook_dir }}/geonode-project/{{ item }}/'
-    dest: ~/{{ project_dir }}/{{ project_dir }}/{{ item }}
-  with_items:
-    - __init__.py
-    - apps.py
-    - celeryapp.py
-    - settings.py
-    - urls.py
-    - version.py
-    - wsgi.py
-
-- name: Template local settings
-  template:
-    src: '{{ playbook_dir }}/geonode-project/local_settings.py.sample'
-    dest: ~/{{ project_dir }}/{{ project_dir }}/local_settings.py
-
-- name: Copy custom templates
-  copy:
-    src: '{{ playbook_dir }}/geonode-project/{{ org }}/{{ project_dir }}/templates'
-    dest: ~/{{ project_dir }}/{{ project_dir }}/
-
-- name: Copy custom static files
-  copy:
-    src: '{{ playbook_dir }}/geonode-project/{{ org }}/{{ project_dir }}/static/'
-    dest: '{{ statics_dir }}/static/{{ org }}-{{ project_dir }}/'
-  become: True
-  
-- name: Set page title
-  replace:
-    path: ~/{{ project_dir }}/{{ project_dir }}/templates/site_base.html
-    regexp: INSERT_PROJECT_HERE
-    replace: '{{ project }}'
-
-# - name: Refresh private_ip var
-#   include_vars: group_vars/{{ envt }}
-
 - name: Link geoserver log to logs directory
   file:
     src: '{{ gsdata }}/logs/'
@@ -101,14 +57,6 @@
     force: True
     follow: False
   become: True
-
-# Doesn't work: port is not used and docker.pid exists but launch still fails
-# - name: Wait for docker daemon to start
-#   wait_for:
-#     # port: 2375
-#     path: /var/run/docker.pid
-#     # delay: 10
-#     timeout: 600
 
 - name: Launch the stack
   command: >

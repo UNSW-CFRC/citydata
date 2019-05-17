@@ -1,14 +1,35 @@
 ---
-# Commands moved to docker_geonode role
-# Commented these tasks because we should do it with docker commands
-#
-# - name: Copy custom files to be served by Apache
-#   django_manage:
-#     app_path: '~/{{ project_dir }}'
-#     command: collectstatic
-#     virtualenv: ~/.virtualenvs/{{ project_dir }}
-#
-# - name: Restart Django
-#   file:
-#     path: ~/{{ project_dir }}//{{ project_dir }}/wsgi.py
-#     state:  touch
+- name: Copy custom templates to host
+  copy:
+    src: '{{ playbook_dir }}/geonode-project/{{ org }}/{{ project_dir }}/templates/'
+    dest: ~/geonode/geonode/templates/
+
+- name: Copy custom static files
+  copy:
+    src: '{{ playbook_dir }}/geonode-project/{{ org }}/{{ project_dir }}/static/'
+    dest: '{{ statics_dir }}/static/'
+    # dest: '{{ statics_dir }}/static/{{ org }}-{{ project_dir }}/'
+  become: True
+
+- name: Set page title
+  replace:
+    path: ~/geonode/geonode/templates/site_base.html
+    regexp: INSERT_PROJECT_HERE
+    replace: '{{ project }}'
+
+- name: Point to site index
+  replace:
+    path: ~/geonode/geonode/urls.py
+    regexp: "template_name='index.html'"
+    replace: "template_name='site_index.html'"
+
+- name: Copy custom geonode files to container
+  command: docker cp {{ item }} django4{{ project_name }}:/usr/src/app/geonode/{{ item }}
+  args:
+    chdir: ~/geonode/geonode
+  with_items:
+    - urls.py
+    - templates/.
+
+- name: Restart django
+  command: docker exec django4{{ project_name }} touch /usr/src/app/geonode/wsgi.py
