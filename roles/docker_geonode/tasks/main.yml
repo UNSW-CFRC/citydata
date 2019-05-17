@@ -58,6 +58,10 @@
     follow: False
   become: True
 
+- Wait 2 minutes for Docker daemon to start
+  pause:
+    minutes: 2
+  
 - name: Launch the stack
   command: >
     docker-compose
