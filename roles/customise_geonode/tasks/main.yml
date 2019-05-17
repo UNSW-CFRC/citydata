@@ -29,14 +29,13 @@
     regexp: "template_name='index.html'"
     replace: "template_name='site_index.html'"
 
-# Commented for now: syntax error
-# - name: Add guide to URLs
-#   blockinfile:
-#     path: ~/geonode/geonode/urls.py
-#     insertafter: ^\s*urlpatterns\s*=\s*patterns
-#     block: |4
-#       # Guide views
-#       (r'^guide/', include('geonode.guide.urls')),
+- name: Add guide to URLs
+  blockinfile:
+    path: ~/geonode/geonode/urls.py
+    insertafter: ^\s*urlpatterns\s*=\s*patterns
+    block: |
+# Guide views
+                     (r'^guide/', include('geonode.guide.urls')),
 
 - name: Copy custom geonode files to container
   command: docker cp {{ item }} django4{{ project_name }}:/usr/src/app/geonode/{{ item }}
