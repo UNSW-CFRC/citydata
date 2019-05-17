@@ -58,7 +58,7 @@
     follow: False
   become: True
 
-- Wait 2 minutes for Docker daemon to start
+- name: Wait 2 minutes for Docker daemon to start
   pause:
     minutes: 2
   
