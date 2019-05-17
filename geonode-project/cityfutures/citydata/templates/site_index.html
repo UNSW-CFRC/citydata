@@ -1,25 +1,83 @@
-{% extends 'index.html' %}
-{% load i18n %}
+{% extends "index.html" %} {% block extra_head %} {{block.super}}
+<style type="text/css">
+    /*    CityFutures banner styles*/
 
-{% block extra_head %}
-<style>
-  #wrap {margin-top: -110px;}
+    .yellow-header .page-title,
+    .category, .tagline {
+        background-color: #ffcc00;
+        display: block;
+        float: left;
+        padding: 5px 15px;
+        clear: left;
+        color: black;
+        font-weight: bold;
+    }
+
+    .tagline {
+        color: #fff;
+        background-color: #1B1C1D;
+        font-weight: normal;
+    }
+
+    .yellow-header .page-title {
+        margin-top: 0.2em;
+    }
+
+    .yellow-header .page-title-wrapper {
+        height: 200px;
+        background-image: url('/static/img/banner.jpg');
+        background-size: cover;
+    }
+
+    /*    No gap above banner*/
+
+    #wrap {
+        padding-top: 0;
+    }
+
+    #wrap .container:first-child .row {
+        display: none;
+    }
+
+    .attribution {
+        position: absolute;
+        bottom: 0px;
+        right: -14px;
+        opacity: 0;
+        background: rgba(0, 0, 0, .25);
+        padding: 0px 5px;
+        font-size: 0.8rem;
+        transition: opacity 0.5s;
+        -webkit-transition: opacity 0.5s;
+        /* Safari */
+    }
+
+    .page-title-wrapper:hover .attribution {
+        opacity: 1;
+    }
 </style>
-  {{ block.super }}
-{% endblock extra_head %}
+{% endblock %}
 
-{% comment %}
-This is where you can override the hero area block. You can simply modify the content below or replace it wholesale to meet your own needs.
-{% endcomment %}
+{% block title %} {{ SITE_NAME }} {% endblock %}
+
 {% block hero %}
-<div class="jumbotron">
-  <div class="container">
-      <h1>{{custom_theme.jumbotron_welcome_title|default:_("Welcome")}}</h1>
-      <p></p>
-      <p>{{custom_theme.jumbotron_welcome_content|default:_("Data Exchange is a platform for sharing data and maps.")}}</p>
-      {% if not custom_theme.jumbotron_cta_hide %}
-      <p><a class="btn btn-default btn-lg" target="_blank" href="{{custom_theme.jumbotron_cta_link|default:_("http://docs.geonode.org/en/master/tutorials/users/index.html")}}" role="button">{{custom_theme.jumbotron_cta_text|default:_("Get Started &raquo;")}}</a></p>
-      {% endif %}
-  </div>
+<div class=" yellow-header">
+    <div class="ui vertical yellow inverted padded one column grid page-title-wrapper">
+        <div class="bottom aligned row">
+            <div class="column">
+                <div class="ui container">
+                    <h1 class="page-title">Heading</h1>
+                </div>
+                <div class="ui container">
+                    <p class="tagline">Store, discover and share &ndash; data for city analytics and decision-making</p>
+                </div>
+            </div>
+            <div class="attribution">
+                <a about="/static/img/banner.jpg" rel="cc:attributionURL" href="https://commons.wikimedia.org/wiki/File:Social_Network_Analysis_Visualization.png" target="_blank">Image</a>: <a about="/static/img/banner.jpg" rel="dc:creator" href="https://commons.wikimedia.org/wiki/User:SlvrKy" property="cc:attributionName" target="_blank">Martin Grandjean</a> / <a about="/static/img/banner.jpg" rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/deed.en" target="_blank">CC BY-SA 3.0</a>
+            </div>
+        </div>
+        <!--        <div class="bottom aligned row">-->
+        <!--        </div>-->
+    </div>
 </div>
-{% endblock hero %}
+{% endblock %}
