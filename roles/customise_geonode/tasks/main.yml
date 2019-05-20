@@ -34,7 +34,7 @@
     path: ~/geonode/geonode/urls.py
     insertafter: ^\s*urlpatterns\s*=\s*patterns
     block: |
-# Guide views
+{{ '#' }} Guide views
                      (r'^guide/', include('geonode.guide.urls')),
 
 - name: Copy custom geonode files to container
