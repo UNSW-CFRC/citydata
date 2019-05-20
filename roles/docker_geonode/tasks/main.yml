@@ -58,13 +58,10 @@
     follow: False
   become: True
 
-<<<<<<< HEAD
 - name: Wait 2 minutes for Docker daemon to start
   pause:
     minutes: 2
-  
-=======
->>>>>>> parent of 40bf8b6... Delete 54 unused files
+
 - name: Launch the stack
   command: >
     docker-compose
