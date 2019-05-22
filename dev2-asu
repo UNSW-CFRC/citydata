@@ -8,11 +8,11 @@ localhost
 [small_sysdisk]
 1.2.3.4
 
-[dev]
+[dev2]
 1.2.3.4
 localhost
 
-[dev-asu]
+[dev2-asu]
 localhost
 1.2.3.4
 
