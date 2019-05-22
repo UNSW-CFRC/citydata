@@ -30,12 +30,10 @@
     replace: "template_name='site_index.html'"
 
 - name: Add guide to URLs
-  blockinfile:
+  lineinfile:
     path: ~/geonode/geonode/urls.py
-    insertafter: ^\s*urlpatterns\s*=\s*patterns
-    block: |
-{{ '#' }} Guide views
-                     (r'^guide/', include('geonode.guide.urls')),
+    insertbefore: '# Layer views'
+    line: "(r'^guide/', include('geonode.guide.urls')), # Guide views"
 
 - name: Copy custom geonode files to container
   command: docker cp {{ item }} django4{{ project_name }}:/usr/src/app/geonode/{{ item }}
