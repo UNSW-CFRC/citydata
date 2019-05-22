@@ -1,5 +1,5 @@
 ---
-- name: Stop containers
+- name: Stop and remove containers
   shell: docker stop {{ item }}4{{ project_name }} && docker rm {{ item }}4{{ project_name }}
   with_items:
     - nginx
