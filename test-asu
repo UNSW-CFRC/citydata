@@ -1,5 +1,5 @@
 [targets]
-172.31.20.125 envt=test org=asu
+172.31.20.125 envt=test org=asu data_src=172.31.20.215 use_docker=True
 
 [asu]
 172.31.20.125
@@ -12,9 +12,11 @@ localhost
 172.31.20.125
 localhost
 
-[test-cityfutures]
+[test-asu]
 172.31.20.125
 localhost
 
+[data_src]
+
 [local]
-localhost envt=test org=asu ansible_connection=local ansible_python_interpreter=/usr/bin/python
+localhost envt=test org=asu data_src=172.31.20.215 ansible_connection=local ansible_python_interpreter=/usr/bin/python
