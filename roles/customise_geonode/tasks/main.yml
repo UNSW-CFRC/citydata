@@ -5,7 +5,7 @@
     dest: ~/geonode/geonode/{{ item }}
   with_items:
     - templates/
-    - guide/
+    # - guide/
 
 - name: Copy custom static files
   copy:
@@ -29,12 +29,12 @@
     regexp: "template_name='index.html'"
     replace: "template_name='site_index.html'"
 
-- name: Add guide to URLs
-  lineinfile:
-    path: ~/geonode/geonode/urls.py
-    insertbefore: '# Layer views'
-    line: "(r'^guide/', include('geonode.guide.urls')), # Guide views"
-
+# - name: Add guide to URLs
+#   lineinfile:
+#     path: ~/geonode/geonode/urls.py
+#     insertbefore: '# Layer views'
+#     line: "(r'^guide/', include('geonode.guide.urls')), # Guide views"
+#
 - name: Copy custom geonode files to Django container
   command: docker cp {{ item }} django4{{ project_name }}:/usr/src/app/geonode/{{ item }}
   args:
