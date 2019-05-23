@@ -10,3 +10,6 @@
 
 - name: Customise geonode
   import_playbook: custom.yml
+
+- name: Check site is up
+  import_playbook: check.yml

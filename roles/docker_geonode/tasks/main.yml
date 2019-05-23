@@ -89,19 +89,3 @@
     - celery
   args:
     chdir: ~/geonode
-
-- name: Wait up to 5 minutes until site is up
-  uri:
-    url: '{{ public_protocol }}://{{ http_hostname }}'
-  register: site_check
-  retries: 60
-  delay: 5
-  until: site_check.status == 200
-
-- debug:
-    msg: 'ERROR {{ site_check.status }} accessing {{ public_protocol }}://{{ http_hostname }}'
-  when: site_check.status != 200
-
-- debug:
-    msg: '{{ public_protocol }}://{{ http_hostname }} is OK'
-  when: site_check.status == 200
