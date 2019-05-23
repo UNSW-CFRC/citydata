@@ -42,6 +42,3 @@
   with_items:
     - urls.py
     - templates/.
-
-- name: Restart django
-  command: docker exec django4{{ project_name }} touch /usr/src/app/geonode/wsgi.py
