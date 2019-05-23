@@ -40,6 +40,35 @@
     src: tasks.py
     dest: ~/geonode/tasks.py
 
+# https://github.com/GeoNode/geonode/pull/4427
+- debug:
+    msg: "Delete this and the next 3 tasks when Geonode PR 4427 is merged"
+
+# Remove extra parameter for TemplateResponse
+- name: GN PR 4427 - Patch 1/2 for Geonode issue 4352
+  replace:
+    path: ~/geonode/geonode/base/admin.py
+    regexp: context,
+    replace: context)
+
+- name: GN PR 4427 -Patch 2/2 for Geonode issue 4352
+  lineinfile:
+    path: ~/geonode/geonode/base/admin.py
+    regexp: current_app=self.admin_site.name\)
+    state: absent
+
+- name: GN PR 4427 - Patch for TemplateSyntaxError at /en/admin/base/backup/
+  lineinfile:
+    path: ~/geonode/geonode/templates/admin/backups/confirm_cancel.html
+    insertafter: "{{ '{%' }} extends \"admin/base_site.html\" {{ '%}' }}"
+    line: "{{ '{%' }} load i18n {{ '%}' }}"
+
+- name: Set gsdata dir for backup
+  replace:
+    path: ~/geonode/geonode/base/management/commands/settings.ini
+    regexp: ^\s*datadir\s*=.*$
+    replace: datadir = /geoserver_data/data
+
 - name: Template docker-compose override files
   template:
     src: 'docker-compose.override.{{ item }}.yml.j2'

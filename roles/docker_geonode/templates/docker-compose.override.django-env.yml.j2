@@ -3,3 +3,9 @@ services:
   django:
     environment:
       DEBUG: '{{ debug }}'
+
+      # EMAIL_ENABLE: 'True'
+      # DEFAULT_FROM_EMAIL: '{{ admin_email }}'
+      ACCOUNT_OPEN_SIGNUP: 'True'
+      ACCOUNT_APPROVAL_REQUIRED: 'False'
+      ACCOUNT_EMAIL_VERIFICATION: 'none'
