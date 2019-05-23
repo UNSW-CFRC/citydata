@@ -35,7 +35,7 @@
     insertbefore: '# Layer views'
     line: "(r'^guide/', include('geonode.guide.urls')), # Guide views"
 
-- name: Copy custom geonode files to container
+- name: Copy custom geonode files to Django container
   command: docker cp {{ item }} django4{{ project_name }}:/usr/src/app/geonode/{{ item }}
   args:
     chdir: ~/geonode/geonode
