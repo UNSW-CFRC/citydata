@@ -1,0 +1,23 @@
+[targets]
+172.31.6.125 envt=prod org=cityfutures data_src=5.6.7.8
+
+[cityfutures]
+172.31.6.125
+localhost
+
+[small_sysdisk]
+172.31.6.125
+
+[prod]
+172.31.6.125
+localhost
+
+[prod-cityfutures]
+172.31.6.125
+localhost
+
+[data_src]
+172.31.6.125 data_src=5.6.7.8
+
+[local]
+localhost data_src=5.6.7.8 envt=prod org=cityfutures ansible_connection=local ansible_python_interpreter=/usr/bin/python
