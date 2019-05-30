@@ -9,3 +9,6 @@ assign_private_ip: '"PrivateIpAddress": "{{ private_ip }}",'
 public_protocol: https
 
 http_hostname: '{{ envt }}.{{ project_name }}.{{ subdomain }}'
+
+vpc_id: vpc-57c87032
+subnet_id: subnet-1823467d
