@@ -58,9 +58,6 @@
 - name: Refresh inventory
   meta: refresh_inventory
 
-- name: Refresh private_ip var
-  include_vars: group_vars/{{ envt }}-{{ org }}
-
 - name: Write private IP group variable
   replace:
     path: '{{ playbook_dir }}/group_vars/{{ envt }}-{{ org }}'
@@ -72,3 +69,6 @@
     path: '{{ playbook_dir }}/group_vars/{{ envt }}-{{ org }}'
     regexp: '^\s*assign_private_ip\s*:\s*[^#]*'
     replace: 'assign_private_ip: ''"PrivateIpAddress": "{{ ''{{ private_ip }}'' }}",'' '
+
+- name: Refresh private_ip vars
+  include_vars: '{{ playbook_dir }}/group_vars/{{ envt }}-{{ org }}'
