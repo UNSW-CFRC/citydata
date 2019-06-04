@@ -1,0 +1,34 @@
+---
+- name: Install packages
+  apt:
+    name:
+      - apache2
+      - libapache2-mod-wsgi
+    state: present
+    update_cache: yes
+  become: true
+
+- name: setup HTTP daemon
+  include_tasks: setup_httpd.yml
+
+- name: Set site hostname for Django and Apache
+  replace:
+    path: ~/{{ project_dir }}/{{ project_dir }}/local_settings.py
+    regexp: '^\s*SITE_HOST_NAME\s*=.*'
+    replace: "SITE_HOST_NAME = os.getenv('SITE_HOST_NAME', '{{ http_hostname }}')"
+
+- name: Set site name for page title
+  lineinfile:
+    path: ~/{{ project_dir }}/{{ project_dir }}/local_settings.py
+    insertafter: '^\s*SITE_HOST_PORT\s*=.*'
+    line: "SITE_NAME = '{{ project }}'"
+
+- name: Activate virtualenv from wsgi
+  blockinfile:
+    path: ~/{{ project_dir }}/{{ project_dir }}/wsgi.py
+    insertafter: os.environ.setdefault
+    block: |
+
+      # Activate your virtual env
+      activate_env=os.path.expanduser("~/.virtualenvs/{{ project_dir }}/bin/activate_this.py")
+      execfile(activate_env, dict(__file__=activate_env))

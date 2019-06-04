@@ -1,0 +1,19 @@
+[targets]
+10.116.2.55 envt=test org=cityfutures data_src=10.116.2.55 use_docker=True
+
+[cityfutures]
+10.116.2.55
+localhost
+
+[small_sysdisk]
+10.116.2.55
+
+[test]
+10.116.2.55
+localhost
+
+[data_src]
+10.116.2.55 data_src=10.116.2.55
+
+[local]
+localhost data_src=10.116.2.55 envt=test org=cityfutures ansible_connection=local ansible_python_interpreter=/usr/bin/python

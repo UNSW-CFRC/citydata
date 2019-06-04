@@ -1,0 +1,41 @@
+---
+- name: Add apache geonode config
+  template:
+    src: geonode.conf.j2
+    dest: /etc/apache2/sites-available/geonode.conf
+  become: true
+
+- name:  Enable proxy_http
+  apache2_module:
+    state: present
+    name: proxy_http
+  become: true
+
+- name: Disable default apache site
+  command: a2dissite 000-default
+  become: true
+
+- name: Enable geonode apache site
+  command: a2ensite geonode
+  become: true
+  notify:
+  - Restart Apache
+
+- name: Create world-writable uploaded subdirectories
+  file:
+    path: '~/{{ project_dir }}/{{ project_dir }}/uploaded/{{item}}'
+    state: directory
+    mode: a=rwx
+  with_items:
+   - thumbs
+   - layers
+   - documents
+   - people_group
+
+- name: Copy GeoNode data to be served by Apache
+  django_manage:
+    app_path: '~/{{ project_dir }}'
+    command: collectstatic
+    virtualenv: ~/.virtualenvs/{{ project_dir }}
+  notify:
+    - Restart Apache
