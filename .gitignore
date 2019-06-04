@@ -66,5 +66,3 @@ development.db-journal
 local_settings.py
 
 .idea/
-
-tmp/

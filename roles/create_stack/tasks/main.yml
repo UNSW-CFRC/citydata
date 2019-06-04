@@ -66,3 +66,9 @@
 
 - name: Refresh private_ip vars
   include_vars: '{{ playbook_dir }}/group_vars/{{ envt }}-{{ org }}'
+#
+# - debug:
+#     var: '{{ item }}'
+#   with_items:
+#     - private_ip
+#     - http_hostname
