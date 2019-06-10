@@ -91,19 +91,18 @@
   pause:
     seconds: 90
 
+- name: Template launch script
+  template:
+    src: launch.sh.j2
+    dest: ~/{{ project_dir }}/launch.sh
+    mode: 0755
+
 - name: Launch the stack asynchronously
-  shell: >
-    docker-compose
-    -f docker-compose.yml
-    -f docker-compose.async.yaml
-    -f ~/{{ project_dir }}/docker-compose.override.hostname.yml
-    -f ~/{{ project_dir }}/docker-compose.override.volumes.yml
-    -f ~/{{ project_dir }}/docker-compose.override.django-env.yml
-    up --build
+  command: ./launch.sh
   async: 600
   poll: 0
   args:
-    chdir: ~/geonode
+    chdir: ~/{{ project_dir }}
 
 - name: Wait up to 5 minutes for django container to start
   shell: docker ps | grep -q 'Up.*django4{{ project_name }}'
