@@ -1,6 +1,0 @@
----
-- hosts: targets
-  vars:
-    ansible_python_interpreter: /usr/bin/python2
-  roles:
-  - install_virtualenv
