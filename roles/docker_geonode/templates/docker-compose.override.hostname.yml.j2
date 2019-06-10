@@ -9,7 +9,7 @@ services:
       - GEONODE_LB_PROTOCOL={{ public_protocol }}
       - SITEURL={{ public_protocol }}://{{ http_hostname }}/
       - ALLOWED_HOSTS=['{{ http_hostname }}', ]
-      - GEOSERVER_PUBLIC_LOCATION={{ public_protocol }}://{{ http_hostname }}/gs/
+      - GEOSERVER_PUBLIC_LOCATION={{ public_protocol }}://{{ http_hostname }}/geoserver/
       - GEOSERVER_WEB_UI_LOCATION={{ public_protocol }}://{{ http_hostname }}/geoserver/
 
   celery:
@@ -19,7 +19,7 @@ services:
       - GEONODE_LB_PROTOCOL={{ public_protocol }}
       - SITEURL={{ public_protocol }}://{{ http_hostname }}/
       - ALLOWED_HOSTS=['{{ http_hostname }}', ]
-      - GEOSERVER_PUBLIC_LOCATION={{ public_protocol }}://{{ http_hostname }}/gs/
+      - GEOSERVER_PUBLIC_LOCATION={{ public_protocol }}://{{ http_hostname }}/geoserver/
       - GEOSERVER_WEB_UI_LOCATION={{ public_protocol }}://{{ http_hostname }}/geoserver/
 
   geoserver:
