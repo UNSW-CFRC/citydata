@@ -2,7 +2,7 @@
 debug: False
 
 envt_ingress_rules: |
-        "ingress7": {
+        "ingress5": {
             "Type": "AWS::EC2::SecurityGroupIngress",
             "Properties": {
                 "GroupId": {
