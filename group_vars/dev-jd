@@ -10,6 +10,7 @@ assign_private_ip: # '"PrivateIpAddress": "{{ private_ip }}",'
 
 elastic_ip: 52.63.208.39 # Created from console
 public_protocol: http
+http_hostname: '{{ elastic_ip }}'
 
 aws_access_key_dev: AKIAJDYDAZOFSD44BWOA
 
