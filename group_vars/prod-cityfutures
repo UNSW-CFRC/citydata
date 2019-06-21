@@ -5,8 +5,8 @@ ansible_ssh_private_key_file: ~/.ssh/CityData_Prod.pem
 # Then store IP addresses above and uncomment
 # assign_p**_ip vars in roles/create_stack/vars/main.yml
 #
-private_ip: # Private IP address of server
-assign_private_ip: # '"PrivateIpAddress": "{{ private_ip }}",'
+private_ip: 10.116.41.192 # Private IP address of server
+assign_private_ip: '"PrivateIpAddress": "{{ private_ip }}",' # '"PrivateIpAddress": "{{ private_ip }}",'
 
 public_protocol: http
 
