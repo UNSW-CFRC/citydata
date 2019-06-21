@@ -118,3 +118,9 @@
     - celery
   args:
     chdir: ~/geonode
+
+- name: Restart containers
+  command: docker restart {{ item }}4{{ project_name }}
+  with_items:
+    - django
+    - celery
