@@ -43,7 +43,7 @@ def update(ctx):
         'GEONODE_LB_PORT'
     ):
         ctx.run("echo export GEOSERVER_PUBLIC_LOCATION=\
-{public_protcl}://{public_fqdn}/gs/ >> {override_fn}".format(**envs), pty=True)
+{public_protcl}://{public_fqdn}/geoserver/ >> {override_fn}".format(**envs), pty=True)
         ctx.run("echo export GEOSERVER_WEB_UI_LOCATION=\
 {public_protcl}://{public_fqdn}/geoserver/ >> {override_fn}".format(**envs), pty=True)
         ctx.run("echo export SITEURL=\
