@@ -1,5 +1,5 @@
 ---
-debug: False
+debug: True
 
 envt_ingress_rules: |
         "ingress5": {
