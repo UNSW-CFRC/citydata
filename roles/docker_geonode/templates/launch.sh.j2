@@ -8,4 +8,4 @@ docker-compose \
 -f ~/{{ project_dir }}/docker-compose.override.hostname.yml \
 -f ~/{{ project_dir }}/docker-compose.override.volumes.yml \
 -f ~/{{ project_dir }}/docker-compose.override.django-env.yml \
-up --build > launch.out 2> launch.err
+up --build > ~/{{ project_dir }}/launch.out 2> ~/{{ project_dir }}/launch.err
