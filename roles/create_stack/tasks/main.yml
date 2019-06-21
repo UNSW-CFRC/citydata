@@ -2,6 +2,11 @@
 
 - include_vars: '{{ org }}.yml'
 
+- name: Create output directory
+  file:
+    path: '{{ role_path }}/outputs'
+    state: directory
+
 - name: Save post-processed template
   template:
     src: citydata.j2
