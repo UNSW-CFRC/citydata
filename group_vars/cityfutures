@@ -7,6 +7,9 @@ state: NSW
 country: Australia
 country_code: AU
 timezone: '{{ country }}/{{ city }}'
+org_longitude: 151.2093
+org_latitude: -33.8688
+org_map_zoom: 7 # Zoom to regional NSW
 
 subdomain: be.unsw.edu.au
 

@@ -9,3 +9,7 @@ services:
       ACCOUNT_OPEN_SIGNUP: 'True'
       ACCOUNT_APPROVAL_REQUIRED: 'False'
       ACCOUNT_EMAIL_VERIFICATION: 'none'
+      # Default new maps to home location
+      DEFAULT_MAP_CENTER_X: '{{ org_longitude }}'
+      DEFAULT_MAP_CENTER_Y: '{{ org_latitude }}'
+      DEFAULT_MAP_ZOOM: '{{ org_map_zoom }}'

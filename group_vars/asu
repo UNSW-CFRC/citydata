@@ -7,6 +7,9 @@ state: Arizona
 country: America
 country_code: US
 timezone: '{{ country }}/{{ city }}'
+org_longitude: -112.0740
+org_latitude: 33.4484
+org_map_zoom: 6 # Zoom to US West
 
 aws_keypair: KERData
 
