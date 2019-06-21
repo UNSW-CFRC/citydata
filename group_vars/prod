@@ -15,8 +15,3 @@ envt_ingress_rules: |
                 "CidrIp": "{{ data_src }}/32"
             }
         },
-
-aws_access_key: '{{ aws_access_key_dev }}'
-aws_secret_key: '{{ aws_secret_key_dev }}'
-django_secret_key: '{{ django_secret_key_dev }}'
-admin_pass: '{{ admin_pass_dev }}'
