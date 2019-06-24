@@ -1,7 +1,0 @@
----
-- name: Customise Geonode for this project
-  hosts: targets
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
-  roles:
-  - customise_geonode
