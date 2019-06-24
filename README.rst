@@ -14,7 +14,9 @@ Available at::
 Create a custom project
 -----------------------
 
-Note: You can call your geonode project whatever you like following the naming conventions for python packages (generally lower case with underscores (``_``). In the examples below, replace ``my_geonode`` with whatever you would like to name your project.
+Note: You can call your geonode project whatever you like following the naming conventions for python packages (generally lower case with underscores (``_``).
+
+In the examples below, I have replaced ``my_geonode`` with ``citydata``.
 
 Using a Python virtual environment
 ++++++++++++++++++++++++++++++++++
@@ -26,12 +28,12 @@ To setup your project using a local python virtual environment, follow these ins
   .. code:: bash
 
     git clone https://github.com/GeoNode/geonode-project.git -b master
-    mkvirtualenv my_geonode
+    mkvirtualenv citydata
     pip install Django==1.11.21
 
-    django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile my_geonode
+    django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile citydata
 
-    cd my_geonode
+    cd citydata
 
 2. Setup the Python Dependencies
 
@@ -45,21 +47,21 @@ To setup your project using a local python virtual environment, follow these ins
     pip install pygdal==$PYGDAL_VERSION
 
     # Using Default Settings
-    DJANGO_SETTINGS_MODULE=my_geonode.settings paver reset
-    DJANGO_SETTINGS_MODULE=my_geonode.settings paver setup
-    DJANGO_SETTINGS_MODULE=my_geonode.settings paver sync
-    DJANGO_SETTINGS_MODULE=my_geonode.settings paver start
+    DJANGO_SETTINGS_MODULE=citydata.settings paver reset
+    DJANGO_SETTINGS_MODULE=citydata.settings paver setup
+    DJANGO_SETTINGS_MODULE=citydata.settings paver sync
+    DJANGO_SETTINGS_MODULE=citydata.settings paver start
 
     # Using Custom Local Settings
-    cp my_geonode/local_settings.py.sample my_geonode/local_settings.py
+    cp citydata/local_settings.py.sample citydata/local_settings.py
 
-    vim my_geonode/wsgi.py
-    --> os.environ.setdefault("DJANGO_SETTINGS_MODULE", "my_geonode.local_settings")
+    vim citydata/wsgi.py
+    --> os.environ.setdefault("DJANGO_SETTINGS_MODULE", "citydata.local_settings")
 
-    DJANGO_SETTINGS_MODULE=my_geonode.local_settings paver reset
-    DJANGO_SETTINGS_MODULE=my_geonode.local_settings paver setup
-    DJANGO_SETTINGS_MODULE=my_geonode.local_settings paver sync
-    DJANGO_SETTINGS_MODULE=my_geonode.local_settings paver start
+    DJANGO_SETTINGS_MODULE=citydata.local_settings paver reset
+    DJANGO_SETTINGS_MODULE=citydata.local_settings paver setup
+    DJANGO_SETTINGS_MODULE=citydata.local_settings paver sync
+    DJANGO_SETTINGS_MODULE=citydata.local_settings paver start
 
 3. Access GeoNode from browser::
 
@@ -77,18 +79,18 @@ You need Docker 1.12 or higher, get the latest stable official release for your 
   .. code:: bash
 
     git clone https://github.com/GeoNode/geonode-project.git -b master
-    mkvirtualenv my_geonode
+    mkvirtualenv citydata
     pip install Django==1.11.21
 
-    django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile my_geonode
+    django-admin startproject --template=./geonode-project -e py,rst,json,yml,ini,env,sample -n Dockerfile citydata
 
-    cd my_geonode
+    cd citydata
 
 2. Run `docker-compose` to start it up (get a cup of coffee or tea while you wait)
 
 Remember to update "wsgi.py" in case you are using "local_settings"
-vim my_geonode/wsgi.py
---> os.environ.setdefault("DJANGO_SETTINGS_MODULE", "my_geonode.local_settings")
+vim citydata/wsgi.py
+--> os.environ.setdefault("DJANGO_SETTINGS_MODULE", "citydata.local_settings")
 
   .. code:: bash
 
@@ -130,7 +132,7 @@ How to debug
 
   .. code:: bash
 
-    docker-compose run -e DOCKER_ENV=development --rm --service-ports django python manage.py runserver --settings=my_geonode.settings 0.0.0.0:8000
+    docker-compose run -e DOCKER_ENV=development --rm --service-ports django python manage.py runserver --settings=citydata.settings 0.0.0.0:8000
 
 3. Access the site on http://localhost/
 
