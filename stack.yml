@@ -1,0 +1,5 @@
+---
+- name: Create server
+  hosts: local
+  roles:
+  - create_stack
