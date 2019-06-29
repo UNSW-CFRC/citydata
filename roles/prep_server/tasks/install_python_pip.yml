@@ -1,0 +1,59 @@
+---
+
+# - name: Deb install python3 apt
+#   deb:
+#     package: python3-apt
+#   # args:
+#   #   chdir: /tmp
+#   become: True
+
+- name: Install python2 and both pip versions
+  apt:
+    name: '{{ item }}'
+    state: latest
+    update_cache: yes
+  with_items:
+    - python2.7
+    - python-pip
+    - python3-pip
+  become: True
+
+- name: Prepare APT
+  apt:
+    name: software-properties-common
+    update_cache: true
+  become: True
+
+- name: Add repo for python 3.6
+  apt_repository:
+    repo: ppa:deadsnakes/ppa
+  become: True
+
+- name: Install python 3.6
+  apt:
+    name: python3.6
+    update_cache: true
+  become: True
+
+- name: Set python3.6 as default for python3
+  alternatives:
+    name: python3
+    link: /usr/bin/python3
+    path: /usr/bin/python3.6
+  become: True
+
+# - name: Set python3 as default for python
+#   alternatives:
+#     name: python
+#     link: /usr/bin/python
+#     path: /usr/bin/python3
+#   become: True
+
+- name: Install python 3.6 GDBM
+  apt:
+    name: '{{ item }}'
+    update_cache: true
+  with_items:
+    - python3.6-gdbm
+    - python-minimal
+  become: True
