@@ -1,5 +1,0 @@
----
-- name: Update readme
-  hosts: localhost
-  roles:
-  - update_docs
