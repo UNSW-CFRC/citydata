@@ -56,7 +56,6 @@ docs/_build/
 target/
 
 # Downstream Project
-geonode/
 downloaded/
 geoserver/
 uploaded/
