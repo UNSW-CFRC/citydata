@@ -10,7 +10,8 @@ repo_owner: UNSW-CFRC
 
 repo_url: 'https://github.com/{{ repo_owner }}/{{ project_name }}'
 
-aws_keypair: '{{ project_id }}'
+# aws_keypair: '{{ project_id }}'
+ansible_ssh_private_key_file: ~/.ssh/{{ aws_keypair }}.pem
 
 tmp_sitename_short: '{{ project }} ({{ envt }})'
 sitename_short: "{{ tmp_sitename_short | replace(' (prod)','') }}"
