@@ -8,3 +8,5 @@ assign_private_ip: # '"PrivateIpAddress": "{{ private_ip }}",'
 
 elastic_ip: 52.53.42.21 # Created from console
 public_protocol: http
+# http_hostname: '{{ elastic_ip }}'
+http_hostname: '{{ project_name }}.{{ subdomain }}'

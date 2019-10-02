@@ -10,7 +10,9 @@ timezone: '{{ country }}/{{ city }}'
 
 aws_keypair: KERData
 
-http_hostname: '{{ elastic_ip }}'
+# http_hostname: '{{ elastic_ip }}'
+
+subdomain: asu.edu
 
 associate_elastic_ip: |
         "IPAssoc": {
