@@ -13,6 +13,7 @@
   git:
     repo: https://github.com/GeoNode/geonode
     dest: ~/geonode
+    version: '{{ geonode_version }}'
     force: True
 
 - name: Set project name for docker

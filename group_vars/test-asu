@@ -10,3 +10,6 @@ elastic_ip: 52.53.42.21 # Created from console
 public_protocol: http
 # http_hostname: '{{ elastic_ip }}'
 http_hostname: '{{ project_name }}.{{ subdomain }}'
+
+# geonode_version: 2.10rc5 Modified after 23 May, no celery container.
+geonode_version: 6e5cf59c3f8c60a8e63137a3e5562eb390bbcf3c # Last commit on 23 May 2019
