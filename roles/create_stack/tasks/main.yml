@@ -45,7 +45,7 @@
 
 - name: Write private IP address to inventory
   replace:
-    path: '{{ playbook_dir }}/{{ envt }}-{{ org }}'
+    path: '{{ playbook_dir }}/{{ envt }}'
     regexp: ^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}
     replace: '{{ stack_result.stack_outputs.PrvIp }}'
 
@@ -53,16 +53,16 @@
   meta: refresh_inventory
 
 - name: Refresh private_ip var
-  include_vars: group_vars/{{ envt }}-{{ org }}
+  include_vars: group_vars/{{ envt }}
 
 - name: Write private IP group variable
   replace:
-    path: '{{ playbook_dir }}/group_vars/{{ envt }}-{{ org }}'
+    path: '{{ playbook_dir }}/group_vars/{{ envt }}'
     regexp: '^\s*private_ip\s*:\s*[^#]*'
     replace: 'private_ip: {{ stack_result.stack_outputs.PrvIp }} '
 
 - name: Write group variable to assign private IP in stack
   replace:
-    path: '{{ playbook_dir }}/group_vars/{{ envt }}-{{ org }}'
+    path: '{{ playbook_dir }}/group_vars/{{ envt }}'
     regexp: '^\s*assign_private_ip\s*:\s*[^#]*'
     replace: 'assign_private_ip: ''"PrivateIpAddress": "{{ ''{{ private_ip }}'' }}",'' '
