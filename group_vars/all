@@ -1,5 +1,5 @@
 ---
-envt_suffix: -{{ envt }}
+envt_suffix: '{{ envt }}'
 
 project_id: "{{ project | regex_replace(' ', '') }}"
 project_dir: '{{ project_id | lower }}'
