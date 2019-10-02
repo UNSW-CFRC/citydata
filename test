@@ -1,0 +1,16 @@
+[targets]
+1.2.3.4 envt=dev org=asu
+
+[asu]
+1.2.3.4
+localhost
+
+[small_sysdisk]
+1.2.3.4
+
+[dev]
+1.2.3.4
+localhost
+
+[local]
+localhost envt=dev org=asu ansible_connection=local ansible_python_interpreter=/usr/bin/python

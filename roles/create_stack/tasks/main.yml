@@ -49,12 +49,6 @@
     regexp: ^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}
     replace: '{{ stack_result.stack_outputs.PrvIp }}'
 
-- name: Write data source var to inventory
-  replace:
-    path: '{{ playbook_dir }}/{{ envt }}-{{ org }}'
-    regexp: data_src=\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}
-    replace: 'data_src={{ stack_result.stack_outputs.PrvIp }}'
-
 - name: Refresh inventory
   meta: refresh_inventory
 
