@@ -8,6 +8,9 @@
 - name: Install geonode
   import_playbook: geonode.yml
 
+- name: Launch geonode
+  import_playbook: launch.yml
+
 - name: Check site is up before customising
   import_playbook: check.yml
 
