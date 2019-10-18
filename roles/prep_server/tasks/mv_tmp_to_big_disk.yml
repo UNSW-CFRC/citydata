@@ -11,7 +11,7 @@
   fail:
     msg: "{{ text.split('\n') }}"
 
-- debug: var=tmp
+- debug: var=tmp_dir
 
 - name: Create folder tmp on big disk with attributes like /tmp
   file:
