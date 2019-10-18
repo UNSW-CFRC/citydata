@@ -11,6 +11,22 @@
     - '{{ fstypes }}'
   become: true
 
+# After stack.yml, /etc/fstab contains two lines:
+#   LABEL=cloudimg-rootfs   /        ext4   defaults,discard        0 0
+#   /dev/xvdb       /mnt    auto    defaults,nofail,x-systemd.requires=cloud-init.service,comment=cloudconfig       0       2
+#
+# The second line is vestigial, as the image only contains one volume: /dev/xvda mounted on /
+#
+# This post refers to a related problem with possibly the same issue at its root:
+#   https://forums.aws.amazon.com/thread.jspa?threadID=79010
+#
+- name: Remove vestigial xvdb line from fstab
+  lineinfile:
+    path: /etc/fstab
+    regexp: /dev/xvdb
+    state: absent
+  become: true
+
 - name: Mount disks
   mount:
     path: '{{ item.0 }}'
